@@ -135,3 +135,19 @@ Validation:
 - ELECTRON_ENABLE_LOGGING=1 npm run dev: PASS — Electron loaded the CommonJS preload without the previous ESM syntax error.
 Notes:
 - The renderer now treats the preload bridge as a required desktop runtime dependency and no longer displays browser-use instructions.
+
+2026-06-30 22:39
+Scope: desktop
+Type: fix
+Summary: Add consistent right spacing between adjacent desktop action buttons.
+Files changed:
+- desktop/src/renderer/src/styles.css
+- desktop/docs/PR/2026-06-30_2235_fix-sandboxed-preload.md
+- desktop/docs/change.log
+Validation:
+- npm run typecheck: PASS — TypeScript passed.
+- npm run lint: PASS — ESLint reported no issues.
+- npm run test: PASS — 33 tests passed across 10 files.
+- npm run build: PASS — Electron Vite built all desktop bundles.
+Notes:
+- All desktop buttons now use a 12px right margin so adjacent actions no longer touch.

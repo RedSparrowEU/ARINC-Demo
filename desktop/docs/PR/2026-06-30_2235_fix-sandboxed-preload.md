@@ -17,13 +17,15 @@ The sandboxed renderer is configured with an ESM preload bundle. Electron execut
 1. Build the preload bundle as CommonJS and load the matching output file.
 2. Remove the browser-only bridge fallback and message from the desktop renderer.
 3. Add a focused test for the preload output configuration.
-4. Run the complete desktop validation tier and verify Electron starts without a preload error.
+4. Add consistent right spacing between adjacent desktop action buttons.
+5. Run the complete desktop validation tier and verify Electron starts without a preload error.
 
 ## Acceptance criteria
 
 - `npm run dev` loads the preload bridge without a syntax error.
 - Selecting a package folder invokes the Electron IPC import workflow.
 - The renderer no longer displays instructions about opening the app outside a browser.
+- Adjacent action buttons have visible horizontal separation.
 
 ## Validation commands
 
