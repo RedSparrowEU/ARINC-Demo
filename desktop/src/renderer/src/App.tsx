@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import type { FileTreeNode, ImportedPackage } from '@shared/domain/imported-package'
 import type { ValidationIssue } from '@shared/domain/validation-result'
 import { matchingDeviceProfile, validateDeviceCompatibility } from '@shared/services/device-compatibility-validator'
@@ -15,6 +15,13 @@ export function App(): React.JSX.Element {
   const desktopApi = window.aeronav
   const [state, setState] = useState<ScreenState>({ kind: 'idle' })
   const [history,setHistory]=useState<OperationHistoryRecord[]>([])
+  const historyRef = useRef<HTMLElement>(null)
+
+  useEffect(() => {
+    if (history.length > 0) {
+      historyRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    }
+  }, [history])
 
   async function selectPackage(): Promise<void> {
     setState({ kind: 'loading' })
@@ -56,7 +63,7 @@ export function App(): React.JSX.Element {
       {state.kind === 'loading' && <section className="panel"><p>Reading untrusted package contents and calculating SHA-256 checksums…</p></section>}
       {state.kind === 'failed' && <FailureState message={state.message} issues={state.issues} />}
       {state.kind === 'completed' && desktopApi && <PackageReport importedPackage={state.package} desktopApi={desktopApi} />}
-      {history.length>0&&<section className="panel"><h2>Operation history</h2>{history.map(item=><p key={item.id}>{item.attemptedAt} · {item.type} · {item.status} · {item.summary}</p>)}</section>}
+      {history.length>0&&<section ref={historyRef} className="panel"><h2>Operation history</h2>{history.map(item=><p key={item.id}>{item.attemptedAt} · {item.type} · {item.status} · {item.summary}</p>)}</section>}
     </main>
   )
 }
