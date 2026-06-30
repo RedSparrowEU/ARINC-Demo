@@ -1,0 +1,99 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		A10000000000000000000001 /* AeroNavCompanionApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000001 /* AeroNavCompanionApp.swift */; };
+		A10000000000000000000002 /* NavigationPackage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000002 /* NavigationPackage.swift */; };
+		A10000000000000000000003 /* PackageListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000003 /* PackageListView.swift */; };
+		A10000000000000000000004 /* PackageListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000004 /* PackageListViewModel.swift */; };
+		A10000000000000000000005 /* ManifestLoading.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000005 /* ManifestLoading.swift */; };
+		A10000000000000000000006 /* ValidationHistoryStoring.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000006 /* ValidationHistoryStoring.swift */; };
+		A10000000000000000000007 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000007 /* Assets.xcassets */; };
+		A10000000000000000000008 /* SampleManifests in Resources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000008 /* SampleManifests */; };
+		A10000000000000000000009 /* AeroNavCompanionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000009 /* AeroNavCompanionTests.swift */; };
+		A1000000000000000000000A /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A2000000000000000000000A /* XCTest.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		A30000000000000000000001 = {isa = PBXContainerItemProxy; containerPortal = A40000000000000000000001 /* Project object */; proxyType = 1; remoteGlobalIDString = A50000000000000000000001; remoteInfo = AeroNavCompanion; };
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		A20000000000000000000001 /* AeroNavCompanionApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AeroNavCompanionApp.swift; sourceTree = "<group>"; };
+		A20000000000000000000002 /* NavigationPackage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationPackage.swift; sourceTree = "<group>"; };
+		A20000000000000000000003 /* PackageListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PackageListView.swift; sourceTree = "<group>"; };
+		A20000000000000000000004 /* PackageListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PackageListViewModel.swift; sourceTree = "<group>"; };
+		A20000000000000000000005 /* ManifestLoading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManifestLoading.swift; sourceTree = "<group>"; };
+		A20000000000000000000006 /* ValidationHistoryStoring.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ValidationHistoryStoring.swift; sourceTree = "<group>"; };
+		A20000000000000000000007 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		A20000000000000000000008 /* SampleManifests */ = {isa = PBXFileReference; lastKnownFileType = folder; path = SampleManifests; sourceTree = "<group>"; };
+		A20000000000000000000009 /* AeroNavCompanionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AeroNavCompanionTests.swift; sourceTree = "<group>"; };
+		A2000000000000000000000A /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = System/Library/Frameworks/XCTest.framework; sourceTree = SDKROOT; };
+		A2000000000000000000000B /* AeroNavCompanion.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AeroNavCompanion.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A2000000000000000000000C /* AeroNavCompanionTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AeroNavCompanionTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		A60000000000000000000001 = {isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
+		A60000000000000000000002 = {isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (A1000000000000000000000A /* XCTest.framework in Frameworks */,); runOnlyForDeploymentPostprocessing = 0; };
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		A70000000000000000000001 = {isa = PBXGroup; children = (A70000000000000000000002 /* AeroNavCompanion */, A70000000000000000000009 /* AeroNavCompanionTests */, A7000000000000000000000A /* Frameworks */, A7000000000000000000000B /* Products */); sourceTree = "<group>"; };
+		A70000000000000000000002 /* AeroNavCompanion */ = {isa = PBXGroup; path = AeroNavCompanion; sourceTree = "<group>"; children = (A70000000000000000000003 /* App */, A70000000000000000000004 /* Presentation */, A70000000000000000000005 /* Domain */, A70000000000000000000006 /* Services */, A70000000000000000000007 /* Persistence */, A70000000000000000000008 /* Resources */); };
+		A70000000000000000000003 /* App */ = {isa = PBXGroup; path = App; sourceTree = "<group>"; children = (A20000000000000000000001 /* AeroNavCompanionApp.swift */,); };
+		A70000000000000000000004 /* Presentation */ = {isa = PBXGroup; path = Presentation; sourceTree = "<group>"; children = (A7000000000000000000000C /* PackageList */,); };
+		A7000000000000000000000C /* PackageList */ = {isa = PBXGroup; path = PackageList; sourceTree = "<group>"; children = (A20000000000000000000003 /* PackageListView.swift */, A20000000000000000000004 /* PackageListViewModel.swift */,); };
+		A70000000000000000000005 /* Domain */ = {isa = PBXGroup; path = Domain; sourceTree = "<group>"; children = (A20000000000000000000002 /* NavigationPackage.swift */,); };
+		A70000000000000000000006 /* Services */ = {isa = PBXGroup; path = Services; sourceTree = "<group>"; children = (A20000000000000000000005 /* ManifestLoading.swift */,); };
+		A70000000000000000000007 /* Persistence */ = {isa = PBXGroup; path = Persistence; sourceTree = "<group>"; children = (A20000000000000000000006 /* ValidationHistoryStoring.swift */,); };
+		A70000000000000000000008 /* Resources */ = {isa = PBXGroup; path = Resources; sourceTree = "<group>"; children = (A20000000000000000000007 /* Assets.xcassets */, A20000000000000000000008 /* SampleManifests */,); };
+		A70000000000000000000009 /* AeroNavCompanionTests */ = {isa = PBXGroup; path = AeroNavCompanionTests; sourceTree = "<group>"; children = (A20000000000000000000009 /* AeroNavCompanionTests.swift */,); };
+		A7000000000000000000000A /* Frameworks */ = {isa = PBXGroup; children = (A2000000000000000000000A /* XCTest.framework */,); name = Frameworks; sourceTree = "<group>"; };
+		A7000000000000000000000B /* Products */ = {isa = PBXGroup; children = (A2000000000000000000000B /* AeroNavCompanion.app */, A2000000000000000000000C /* AeroNavCompanionTests.xctest */,); name = Products; sourceTree = "<group>"; };
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		A50000000000000000000001 /* AeroNavCompanion */ = {isa = PBXNativeTarget; buildConfigurationList = A80000000000000000000001; buildPhases = (A90000000000000000000001 /* Sources */, A60000000000000000000001 /* Frameworks */, AA0000000000000000000001 /* Resources */,); buildRules = (); dependencies = (); name = AeroNavCompanion; productName = AeroNavCompanion; productReference = A2000000000000000000000B; productType = "com.apple.product-type.application"; };
+		A50000000000000000000002 /* AeroNavCompanionTests */ = {isa = PBXNativeTarget; buildConfigurationList = A80000000000000000000002; buildPhases = (A90000000000000000000002 /* Sources */, A60000000000000000000002 /* Frameworks */, AA0000000000000000000002 /* Resources */,); buildRules = (); dependencies = (AB0000000000000000000001 /* PBXTargetDependency */,); name = AeroNavCompanionTests; productName = AeroNavCompanionTests; productReference = A2000000000000000000000C; productType = "com.apple.product-type.bundle.unit-test"; };
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		A40000000000000000000001 /* Project object */ = {isa = PBXProject; attributes = {BuildIndependentTargetsInParallel = 1; LastSwiftUpdateCheck = 2600; LastUpgradeCheck = 2600; TargetAttributes = {A50000000000000000000001 = {CreatedOnToolsVersion = 26.0;}; A50000000000000000000002 = {CreatedOnToolsVersion = 26.0; TestTargetID = A50000000000000000000001;};};}; buildConfigurationList = A80000000000000000000003; compatibilityVersion = "Xcode 14.0"; developmentRegion = en; hasScannedForEncodings = 0; knownRegions = (en, Base); mainGroup = A70000000000000000000001; productRefGroup = A7000000000000000000000B; projectDirPath = ""; projectRoot = ""; targets = (A50000000000000000000001, A50000000000000000000002); };
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		AA0000000000000000000001 = {isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = (A10000000000000000000007 /* Assets.xcassets in Resources */, A10000000000000000000008 /* SampleManifests in Resources */,); runOnlyForDeploymentPostprocessing = 0; };
+		AA0000000000000000000002 = {isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0; };
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		A90000000000000000000001 /* Sources */ = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (A10000000000000000000001, A10000000000000000000002, A10000000000000000000003, A10000000000000000000004, A10000000000000000000005, A10000000000000000000006,); runOnlyForDeploymentPostprocessing = 0; };
+		A90000000000000000000002 /* Sources */ = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (A10000000000000000000009,); runOnlyForDeploymentPostprocessing = 0; };
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		AB0000000000000000000001 /* PBXTargetDependency */ = {isa = PBXTargetDependency; target = A50000000000000000000001; targetProxy = A30000000000000000000001; };
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		AC0000000000000000000001 /* Debug */ = {isa = XCBuildConfiguration; buildSettings = {ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon; ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor; CODE_SIGN_STYLE = Automatic; CURRENT_PROJECT_VERSION = 1; DEVELOPMENT_TEAM = ""; ENABLE_PREVIEWS = YES; GENERATE_INFOPLIST_FILE = YES; INFOPLIST_KEY_CFBundleDisplayName = "AeroNav Companion"; INFOPLIST_KEY_UILaunchScreen_Generation = YES; INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES; IPHONEOS_DEPLOYMENT_TARGET = 18.0; MARKETING_VERSION = 0.1.0; PRODUCT_BUNDLE_IDENTIFIER = eu.redsparrow.AeroNavCompanion; PRODUCT_NAME = "$(TARGET_NAME)"; SDKROOT = iphoneos; SUPPORTED_PLATFORMS = "iphoneos iphonesimulator"; SWIFT_EMIT_LOC_STRINGS = YES; SWIFT_VERSION = 6.0; TARGETED_DEVICE_FAMILY = "1,2"; }; name = Debug; };
+		AC0000000000000000000002 /* Release */ = {isa = XCBuildConfiguration; buildSettings = {ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon; ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor; CODE_SIGN_STYLE = Automatic; CURRENT_PROJECT_VERSION = 1; DEVELOPMENT_TEAM = ""; ENABLE_PREVIEWS = YES; GENERATE_INFOPLIST_FILE = YES; INFOPLIST_KEY_CFBundleDisplayName = "AeroNav Companion"; INFOPLIST_KEY_UILaunchScreen_Generation = YES; INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES; IPHONEOS_DEPLOYMENT_TARGET = 18.0; MARKETING_VERSION = 0.1.0; PRODUCT_BUNDLE_IDENTIFIER = eu.redsparrow.AeroNavCompanion; PRODUCT_NAME = "$(TARGET_NAME)"; SDKROOT = iphoneos; SUPPORTED_PLATFORMS = "iphoneos iphonesimulator"; SWIFT_COMPILATION_MODE = wholemodule; SWIFT_VERSION = 6.0; TARGETED_DEVICE_FAMILY = "1,2"; }; name = Release; };
+		AC0000000000000000000003 /* Debug */ = {isa = XCBuildConfiguration; buildSettings = {BUNDLE_LOADER = "$(TEST_HOST)"; CODE_SIGN_STYLE = Automatic; GENERATE_INFOPLIST_FILE = YES; IPHONEOS_DEPLOYMENT_TARGET = 18.0; PRODUCT_BUNDLE_IDENTIFIER = eu.redsparrow.AeroNavCompanionTests; PRODUCT_NAME = "$(TARGET_NAME)"; SDKROOT = iphoneos; SUPPORTED_PLATFORMS = "iphoneos iphonesimulator"; SWIFT_VERSION = 6.0; TARGETED_DEVICE_FAMILY = "1,2"; TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AeroNavCompanion.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/AeroNavCompanion"; }; name = Debug; };
+		AC0000000000000000000004 /* Release */ = {isa = XCBuildConfiguration; buildSettings = {BUNDLE_LOADER = "$(TEST_HOST)"; CODE_SIGN_STYLE = Automatic; GENERATE_INFOPLIST_FILE = YES; IPHONEOS_DEPLOYMENT_TARGET = 18.0; PRODUCT_BUNDLE_IDENTIFIER = eu.redsparrow.AeroNavCompanionTests; PRODUCT_NAME = "$(TARGET_NAME)"; SDKROOT = iphoneos; SUPPORTED_PLATFORMS = "iphoneos iphonesimulator"; SWIFT_VERSION = 6.0; TARGETED_DEVICE_FAMILY = "1,2"; TEST_HOST = "$(BUILT_PRODUCTS_DIR)/AeroNavCompanion.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/AeroNavCompanion"; }; name = Release; };
+		AC0000000000000000000005 /* Debug */ = {isa = XCBuildConfiguration; buildSettings = {ALWAYS_SEARCH_USER_PATHS = NO; CLANG_ENABLE_MODULES = YES; CLANG_ENABLE_OBJC_ARC = YES; DEBUG_INFORMATION_FORMAT = dwarf; ENABLE_TESTABILITY = YES; GCC_C_LANGUAGE_STANDARD = gnu17; GCC_OPTIMIZATION_LEVEL = 0; ONLY_ACTIVE_ARCH = YES; SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)"; SWIFT_OPTIMIZATION_LEVEL = "-Onone"; }; name = Debug; };
+		AC0000000000000000000006 /* Release */ = {isa = XCBuildConfiguration; buildSettings = {ALWAYS_SEARCH_USER_PATHS = NO; CLANG_ENABLE_MODULES = YES; CLANG_ENABLE_OBJC_ARC = YES; DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym"; ENABLE_NS_ASSERTIONS = NO; GCC_C_LANGUAGE_STANDARD = gnu17; SWIFT_COMPILATION_MODE = wholemodule; VALIDATE_PRODUCT = YES; }; name = Release; };
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		A80000000000000000000001 = {isa = XCConfigurationList; buildConfigurations = (AC0000000000000000000001 /* Debug */, AC0000000000000000000002 /* Release */); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
+		A80000000000000000000002 = {isa = XCConfigurationList; buildConfigurations = (AC0000000000000000000003 /* Debug */, AC0000000000000000000004 /* Release */); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
+		A80000000000000000000003 = {isa = XCConfigurationList; buildConfigurations = (AC0000000000000000000005 /* Debug */, AC0000000000000000000006 /* Release */); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release; };
+/* End XCConfigurationList section */
+	};
+	rootObject = A40000000000000000000001 /* Project object */;
+}
