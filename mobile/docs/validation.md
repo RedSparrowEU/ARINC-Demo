@@ -3,10 +3,16 @@
 Run from `mobile/`:
 
 ```bash
+make run
+
 xcodebuild -list -project AeroNavCompanion.xcodeproj
 xcodebuild test -project AeroNavCompanion.xcodeproj -scheme AeroNavCompanion \
   -destination 'platform=iOS Simulator,name=iPhone 17 Pro,OS=26.0.1'
 ```
+
+The `run` target uses `iPhone 17 Pro` by default and accepts an installed device name through
+`SIMULATOR`, for example `make run SIMULATOR='iPhone 16 Pro'`. It stores DerivedData under the
+ignored `mobile/.build/` directory, then installs and launches the Debug app.
 
 If this destination is unavailable, inspect `xcrun simctl list devices available`, select an
 installed iPhone simulator, and report the exact destination used. Future tests must cover decoding,

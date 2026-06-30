@@ -95,3 +95,22 @@ Validation:
 - xcrun simctl install/launch and simulator UI smoke check: PASS — all three close controls rendered and dismissed only their containing sheets.
 Notes:
 - Each close button dismisses only its containing sheet; nested scanner and importer behavior is unchanged.
+
+2026-06-30 23:00
+Scope: mobile
+Type: chore
+Summary: Add a Makefile command to build and launch the mobile app in an iOS simulator.
+Files changed:
+- mobile/Makefile
+- mobile/README.md
+- mobile/docs/validation.md
+- mobile/docs/PR/2026-06-30_2300_mobile-simulator-makefile.md
+- mobile/docs/change.log
+Validation:
+- xcodebuild -list -project AeroNavCompanion.xcodeproj: PASS — app, test target, and shared scheme discovered.
+- make simulator-id: PASS — resolved the available iPhone 17 Pro simulator UDID.
+- make run: PASS — booted the simulator, built and installed the Debug app, and launched bundle eu.redsparrow.AeroNavCompanion.
+- make run SIMULATOR='Missing Simulator': PASS — rejected an unavailable simulator with actionable guidance.
+- xcodebuild test -project AeroNavCompanion.xcodeproj -scheme AeroNavCompanion -destination 'platform=iOS Simulator,name=iPhone 17 Pro,OS=26.0.1': PASS — all 10 tests passed.
+Notes:
+- The default device name is configurable with the SIMULATOR make variable; build output remains under the ignored mobile/.build directory.
