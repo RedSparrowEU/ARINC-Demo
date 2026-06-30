@@ -20,3 +20,6 @@ tree, calculated checksums, and validation issues. Full source paths are not exp
 Imported package files are treated as untrusted and never executed. The main process rejects unsafe
 declared paths and declared symlinks, does not follow symlinks while constructing the tree, and
 confines checksum work to regular files under the selected package root.
+
+Device profiles and compatibility rules are shared, pure modules. The renderer can revalidate a
+selected profile without filesystem IPC or rereading the package.

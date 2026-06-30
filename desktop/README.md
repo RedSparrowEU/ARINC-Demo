@@ -5,6 +5,8 @@ safe folder selection, manifest parsing, package metadata and file-tree display,
 and deterministic validation reporting.
 
 Device compatibility, archive import, export, diagnostics, and operation history are not implemented.
+Phase 2 adds selectable fictional device profiles and compatibility checks; archive import, export,
+diagnostics, and operation history remain unimplemented.
 
 ## Requirements
 

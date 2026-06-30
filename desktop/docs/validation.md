@@ -26,3 +26,6 @@ post-copy verification without depending on external downloads.
 
 Device compatibility, signature requirements, export checks, and post-export verification begin in
 later roadmap phases and are intentionally excluded.
+
+Phase 2 compatibility validates selected target identity, region, declared categories, optional
+manifest media type, signing requirements, and total package size against checked-in demo profiles.

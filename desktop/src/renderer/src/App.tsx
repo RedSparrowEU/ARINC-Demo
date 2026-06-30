@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import type { FileTreeNode, ImportedPackage } from '@shared/domain/imported-package'
 import type { ValidationIssue } from '@shared/domain/validation-result'
+import { matchingDeviceProfile, validateDeviceCompatibility } from '@shared/services/device-compatibility-validator'
 
 type ScreenState =
   | { kind: 'idle' }
@@ -69,6 +70,13 @@ function FailureState({ message, issues }: { message: string; issues: Validation
 
 function PackageReport({ importedPackage }: { importedPackage: ImportedPackage }): React.JSX.Element {
   const { manifest, validation, tree } = importedPackage
+  const profiles = window.aeronav.getDeviceProfiles()
+  const initial = matchingDeviceProfile(manifest, profiles)
+  const [profileId, setProfileId] = useState(initial?.id ?? '')
+  const profile = profiles.find((item) => item.id === profileId)
+  const packageSize = treeSize(tree)
+  const compatibility = validateDeviceCompatibility(manifest, profile, packageSize)
+  const readiness = validation.status === 'failed' || compatibility.status === 'failed' ? 'failed' : validation.status === 'warning' || compatibility.status === 'warning' ? 'warning' : 'valid'
   return (
     <div className="report-grid">
       <section className="panel summary-panel">
@@ -84,6 +92,12 @@ function PackageReport({ importedPackage }: { importedPackage: ImportedPackage }
           <div><dt>Target device</dt><dd>{manifest.targetDevice}</dd></div>
           <div><dt>Effective</dt><dd>{manifest.effectiveFrom} — {manifest.effectiveTo}</dd></div>
         </dl>
+      </section>
+      <section className="panel summary-panel">
+        <div className="section-heading"><h2>Device compatibility</h2><span className={`status ${readiness}`}>overall {readiness}</span></div>
+        <label>Target device <select value={profileId} onChange={(event) => setProfileId(event.target.value)}><option value="">Select device</option>{profiles.map((item)=><option key={item.id} value={item.id}>{item.name}</option>)}</select></label>
+        {profile && <dl className="metadata"><div><dt>Media</dt><dd>{profile.mediaType}</dd></div><div><dt>Root folder</dt><dd>{profile.requiredRootFolder}</dd></div><div><dt>Regions</dt><dd>{profile.supportedRegions.join(', ')}</dd></div><div><dt>Required categories</dt><dd>{profile.requiredCategories.join(', ')}</dd></div><div><dt>Signing</dt><dd>{profile.requiresSignedPackages?'Required':'Not required'}</dd></div><div><dt>Maximum size</dt><dd>{profile.maxPackageSizeMb} MB</dd></div></dl>}
+        {compatibility.issues.length ? <IssueList issues={compatibility.issues}/>:<p className="success-copy">Device compatibility passed.</p>}
       </section>
 
       <section className="panel">
@@ -113,6 +127,8 @@ function PackageReport({ importedPackage }: { importedPackage: ImportedPackage }
     </div>
   )
 }
+
+function treeSize(nodes:FileTreeNode[]):number { return nodes.reduce((total,node)=>total+(node.size??0)+treeSize(node.children??[]),0) }
 
 function IssueList({ issues }: { issues: ValidationIssue[] }): React.JSX.Element {
   return <ul className="issues">{issues.map((issue, index) => <li key={`${issue.code}-${issue.path ?? index}`}><span className={`severity ${issue.severity}`}>{issue.severity}</span><div>{issue.message}{issue.path && <code>{issue.path}</code>}</div></li>)}</ul>

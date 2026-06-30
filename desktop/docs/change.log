@@ -37,3 +37,19 @@ Validation:
 - fixture JSON, checksum, and labeling checks: PASS — all Phase 1 fixtures passed integrity checks.
 Notes:
 - Device compatibility, signatures, archive import, export, diagnostics, and history remain deferred.
+
+2026-06-30 17:58
+Scope: desktop
+Type: feature
+Summary: Add Phase 2 device profiles and compatibility validation.
+Files changed:
+- desktop/src/
+- desktop/tests/
+- desktop/docs/
+Validation:
+- npm run typecheck: PASS — TypeScript passed.
+- npm run lint: PASS — ESLint passed.
+- npm run test: PASS — compatibility and Phase 1 tests passed.
+- npm run build: PASS — Electron Vite built all bundles.
+Notes:
+- Export remains deferred to Phase 3.
