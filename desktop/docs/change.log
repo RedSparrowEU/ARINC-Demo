@@ -93,3 +93,23 @@ Validation:
 - npm run build: PASS — Electron Vite built all bundles.
 Notes:
 - Preview data is generated and explicitly non-operational.
+
+2026-06-30 22:23
+Scope: desktop
+Type: fix
+Summary: Guard renderer actions when the Electron desktop bridge is unavailable.
+Files changed:
+- desktop/package.json
+- desktop/src/renderer/src/App.tsx
+- desktop/src/shared/desktop-bridge.ts
+- desktop/tests/desktop-api.test.ts
+- desktop/docs/PR/2026-06-30_2223_browser-bridge-guard.md
+Validation:
+- npm run dev: PASS — dev startup now clears `ELECTRON_RUN_AS_NODE` and opens the Electron app window.
+- npm run typecheck: PASS — main, preload, renderer, shared, and test TypeScript passed.
+- npm run lint: PASS — ESLint reported no issues.
+- npm run test: PASS — 34 tests passed across 10 files.
+- npm run build: PASS — Electron Vite built main, preload, and renderer bundles.
+Notes:
+- The `dev` script now strips `ELECTRON_RUN_AS_NODE` so Electron startup does not depend on shell cleanup.
+- The new message is specific to a missing Electron bridge so browser-only rendering no longer reports a raw JavaScript property error.

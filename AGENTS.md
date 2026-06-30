@@ -603,7 +603,8 @@ A task is not complete until:
 4. relevant `docs/PR/` plan files exist,
 5. changes are committed on the working branch,
 6. the branch is pushed unless the user explicitly says not to push,
-7. PR status is reported.
+7. a PR to `dev` is opened unless the user explicitly says not to open one,
+8. PR status is reported.
 
 If repository credentials or remote access are unavailable, report the blocker and provide the exact next action.
 
