@@ -604,7 +604,10 @@ A task is not complete until:
 5. changes are committed on the working branch,
 6. the branch is pushed unless the user explicitly says not to push,
 7. a PR to `dev` is opened unless the user explicitly says not to open one,
-8. PR status is reported.
+8. PR status is reported,
+9. after the PR is merged, the local working copy is switched to the PR target branch and fast-forwarded from its remote before the final handoff.
+
+If the PR is still open, remain on the working branch and report the merge state as `PR pending`; do not switch to the target branch early.
 
 If repository credentials or remote access are unavailable, report the blocker and provide the exact next action.
 
