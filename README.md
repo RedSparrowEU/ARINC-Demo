@@ -688,8 +688,19 @@ open AeroNavCompanion.xcodeproj
 
 Project-specific setup, architecture, and validation details are documented in
 [`desktop/README.md`](desktop/README.md) and [`mobile/README.md`](mobile/README.md). Both shells are
-foundations only: package import, production manifest decoding, validation, export, and diagnostics
-remain roadmap work.
+non-operational demonstrations.
+
+## Implementation status
+
+Phase 1 is implemented for both applications:
+
+- desktop selects a package folder, parses `manifest.json`, displays metadata and a file tree,
+  calculates SHA-256 checksums, and produces a deterministic validation report;
+- mobile displays representative sample packages and navigates to metadata, status, effective dates,
+  and package contents grouped by category.
+
+Desktop device compatibility/export and mobile document import/decoding begin in later phases. No
+diagnostics, persistence, route preview, or operational aviation behavior is implemented.
 
 ## Demo script for interviews
 

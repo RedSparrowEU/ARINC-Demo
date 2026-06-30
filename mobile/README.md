@@ -1,8 +1,11 @@
 # AeroNav Companion
 
-Native SwiftUI companion shell for reviewing non-operational AeroNav package information. The
-initial scaffold provides architectural seams and a sample list only; manifest import, validation,
-history, and diagnostics parsing are not yet implemented.
+Native SwiftUI companion for reviewing non-operational AeroNav package information. Phase 1 presents
+three representative package states and navigates to metadata, effective dates, status, and files
+grouped by category.
+
+The sample statuses are display data. Document import, manifest decoding, mobile validation,
+history, and diagnostics parsing are not implemented.
 
 ## Requirements
 
