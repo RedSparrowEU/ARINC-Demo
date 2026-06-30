@@ -20,9 +20,15 @@ Phase 5 adds optional `AERONAV1` text decoding and VisionKit QR scanning on supp
 ## Commands
 
 ```bash
+make run
+
 xcodebuild -list -project AeroNavCompanion.xcodeproj
 xcodebuild test -project AeroNavCompanion.xcodeproj -scheme AeroNavCompanion \
   -destination 'platform=iOS Simulator,name=iPhone 17 Pro,OS=26.0.1'
 ```
+
+`make run` boots, builds, installs, and launches the app on `iPhone 17 Pro`. To use another
+installed simulator, run `make run SIMULATOR='iPhone 16 Pro'`. List available devices with
+`xcrun simctl list devices available`.
 
 See [architecture](docs/architecture.md) and [validation](docs/validation.md) for project rules.
