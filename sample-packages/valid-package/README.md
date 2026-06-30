@@ -6,3 +6,5 @@
 - Expected diagnostics: no blocking issues.
 
 This data is non-operational, not certified, and must not be used for navigation or flight.
+
+The route JSON and PDF chart are generated Phase 5 preview fixtures with no operational content.

@@ -31,3 +31,4 @@ Phase 2 compatibility validates selected target identity, region, declared categ
 manifest media type, signing requirements, and total package size against checked-in demo profiles.
 Phase 3 revalidates before copying and requires every exported declared file checksum to match.
 Phase 4 verifies report schema, severity summaries, suggested actions, and operation-history retention.
+Phase 5 verifies route schema and restricts chart preview to declared PDF files no larger than 10 MB.

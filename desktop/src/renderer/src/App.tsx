@@ -3,6 +3,7 @@ import type { FileTreeNode, ImportedPackage } from '@shared/domain/imported-pack
 import type { ValidationIssue } from '@shared/domain/validation-result'
 import { matchingDeviceProfile, validateDeviceCompatibility } from '@shared/services/device-compatibility-validator'
 import type{OperationHistoryRecord}from'@shared/domain/diagnostics-report'
+import type{RoutePreview}from'@shared/domain/preview'
 
 type ScreenState =
   | { kind: 'idle' }
@@ -82,6 +83,8 @@ function PackageReport({ importedPackage }: { importedPackage: ImportedPackage }
   const compatibility = validateDeviceCompatibility(manifest, profile, packageSize)
   const readiness = validation.status === 'failed' || compatibility.status === 'failed' ? 'failed' : validation.status === 'warning' || compatibility.status === 'warning' ? 'warning' : 'valid'
   const [exportMessage,setExportMessage]=useState('')
+  const [route,setRoute]=useState<RoutePreview>();const[chart,setChart]=useState<string>();const previewPath=manifest.files.find(f=>f.path.endsWith('route-preview.json'))?.path;const chartPath=manifest.files.find(f=>f.category==='charts'&&f.path.toLowerCase().endsWith('.pdf'))?.path
+  const [bridgeText,setBridgeText]=useState('')
   return (
     <div className="report-grid">
       <section className="panel summary-panel">
@@ -112,6 +115,8 @@ function PackageReport({ importedPackage }: { importedPackage: ImportedPackage }
         <div className="section-heading"><h2>Validation report</h2><span>{validation.issues.length} issues</span></div>
         {validation.issues.length === 0 ? <p className="success-copy">All Phase 1 checks passed.</p> : <IssueList issues={validation.issues} />}
       </section>
+      {(previewPath||chartPath)&&<section className="panel summary-panel"><div className="section-heading"><h2>Non-operational previews</h2><span>demo visualization only</span></div>{previewPath&&<button onClick={()=>{if(importedPackage.sessionId)void window.aeronav.loadRoutePreview(importedPackage.sessionId,previewPath).then(r=>{if(r.kind==='success')setRoute(r.value)})}}>Load route preview</button>}{chartPath&&<button onClick={()=>{if(importedPackage.sessionId)void window.aeronav.loadChartPreview(importedPackage.sessionId,chartPath).then(r=>{if(r.kind==='success')setChart(r.value)})}}>Load PDF chart</button>}{route&&<RouteMap route={route}/>} {chart&&<iframe className="chart-preview" title="Non-operational demo chart" src={chart}/>}</section>}
+      <section className="panel summary-panel"><div className="section-heading"><h2>Optional companion bridge</h2><span>compact text / QR payload</span></div><button onClick={()=>{const issues=[...validation.issues,...compatibility.issues];const payload={packageId:manifest.packageId,status:readiness,generatedAt:new Date().toISOString(),summary:`${issues.length} issues`,blocking:issues.filter(i=>i.severity==='blocking').length,warning:issues.filter(i=>i.severity==='warning').length};setBridgeText(`AERONAV1:${btoa(JSON.stringify(payload)).replaceAll('+','-').replaceAll('/','_').replaceAll('=','')}`)}}>Generate companion text</button>{bridgeText&&<textarea readOnly value={bridgeText} rows={5} aria-label="Compact companion summary"/>}</section>
 
       <section className="panel">
         <div className="section-heading"><h2>Declared files</h2><span>{validation.files.length}</span></div>
@@ -145,3 +150,4 @@ function IssueList({ issues }: { issues: ValidationIssue[] }): React.JSX.Element
 function FileTree({ nodes }: { nodes: FileTreeNode[] }): React.JSX.Element {
   return <ul className="file-tree">{nodes.map((node) => <li key={node.relativePath}><span>{node.type === 'directory' ? '▾' : node.type === 'symlink' ? '↗' : '•'} {node.name}</span>{node.children && <FileTree nodes={node.children} />}</li>)}</ul>
 }
+function RouteMap({route}:{route:RoutePreview}):React.JSX.Element{const lats=route.points.map(p=>p.latitude),lons=route.points.map(p=>p.longitude),minLat=Math.min(...lats),maxLat=Math.max(...lats),minLon=Math.min(...lons),maxLon=Math.max(...lons);const xy=(lat:number,lon:number)=>`${20+((lon-minLon)/(maxLon-minLon||1))*560},${20+((maxLat-lat)/(maxLat-minLat||1))*260}`;return <div><h3>{route.name}</h3><svg viewBox="0 0 600 300" role="img" aria-label="Simplified non-operational route"><polyline points={route.points.map(p=>xy(p.latitude,p.longitude)).join(' ')} fill="none" stroke="#64d3c6" strokeWidth="4"/>{route.points.map(p=>{const [x,y]=xy(p.latitude,p.longitude).split(',');return <g key={p.id}><circle cx={x} cy={y} r="7" fill="#ffd37a"/><text x={Number(x)+10} y={Number(y)-10} fill="white">{p.id}</text></g>})}</svg></div>}

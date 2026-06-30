@@ -12,11 +12,21 @@
   "effectiveTo": "2026-08-05",
   "requiresSigning": false,
   "signed": false,
-  "dataCategories": ["navigation"],
+  "dataCategories": ["navigation", "charts"],
   "files": [{
     "path": "navdata/demo.txt",
     "category": "navigation",
     "required": true,
     "sha256": "7355fd59f85a76f5df40d8ffe83ca4c6f1386b3922a0e1b4fd28f5084e4cf7a6"
+  }, {
+    "path": "navdata/route-preview.json",
+    "category": "navigation",
+    "required": false,
+    "sha256": "8c49c641e9c1bdb12ac8ef6e11b96475ee1a9c8315dbe53474fbf0519073376a"
+  }, {
+    "path": "charts/DEMO_CHART.pdf",
+    "category": "charts",
+    "required": false,
+    "sha256": "330b58465f1ef0b45753afeb26152a747d294eae6250419cec8b901aa20fb1ea"
   }]
 }

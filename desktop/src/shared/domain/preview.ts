@@ -1,0 +1,1 @@
+export interface RoutePoint{id:string;latitude:number;longitude:number}export interface RoutePreview{name:string;points:RoutePoint[]}export type PreviewResult<T>={kind:'success';value:T}|{kind:'failed';message:string}
