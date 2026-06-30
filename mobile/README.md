@@ -8,6 +8,7 @@ The sample statuses are display data. Document import, manifest decoding, mobile
 history, and diagnostics parsing are not implemented.
 Phase 2 imports JSON manifests through the document picker and keeps results in memory. Offline
 history and diagnostics remain unimplemented.
+Phase 3 stores the newest 100 validation attempts offline in an atomic versioned JSON file.
 
 ## Requirements
 

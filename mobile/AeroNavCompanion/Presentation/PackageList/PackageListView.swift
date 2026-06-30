@@ -4,6 +4,7 @@ import UniformTypeIdentifiers
 struct PackageListView: View {
     @StateObject private var viewModel: PackageListViewModel
     @State private var importing = false
+    @State private var showingHistory = false
 
     init(viewModel: PackageListViewModel) {
         _viewModel = StateObject(wrappedValue: viewModel)
@@ -19,7 +20,8 @@ struct PackageListView: View {
                 }
             }
             .navigationTitle("AeroNav Companion")
-            .toolbar { Button("Import manifest", systemImage:"square.and.arrow.down") { importing=true } }
+            .toolbar { Button("History",systemImage:"clock"){showingHistory=true}; Button("Import manifest", systemImage:"square.and.arrow.down") { importing=true } }
+            .sheet(isPresented:$showingHistory){HistoryView(viewModel:HistoryViewModel(store:viewModel.historyStore))}
             .fileImporter(isPresented:$importing, allowedContentTypes:[.json]) { result in if case let .success(url)=result { Task { await viewModel.importManifest(from:url) } } }
             .safeAreaInset(edge:.top) { importBanner }
             .overlay {

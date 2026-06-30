@@ -705,6 +705,8 @@ diagnostics, persistence, route preview, or operational aviation behavior is imp
 Phase 2 is also implemented: desktop validates selectable fictional device profiles, while mobile
 imports and validates manifest JSON through the iOS document picker. Desktop export and mobile
 offline history remain later phases.
+Phase 3 is implemented: desktop exports verified declared files and a versioned export log to a
+selected folder, and mobile persists the newest 100 validation attempts in an atomic local store.
 
 ## Demo script for interviews
 

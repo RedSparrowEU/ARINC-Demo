@@ -41,3 +41,15 @@ Validation:
 - xcodebuild test -project AeroNavCompanion.xcodeproj -scheme AeroNavCompanion -destination 'platform=iOS Simulator,name=iPhone 17 Pro,OS=26.0.1': PASS — tests passed.
 Notes:
 - Imported packages remain in memory; persistence begins in Phase 3.
+
+2026-06-30 18:15
+Scope: mobile
+Type: feature
+Summary: Add Phase 3 atomic offline validation history.
+Files changed:
+- mobile/AeroNavCompanion/
+- mobile/AeroNavCompanionTests/
+Validation:
+- xcodebuild test: PASS — history and existing tests passed.
+Notes:
+- Diagnostics remain deferred to Phase 4.

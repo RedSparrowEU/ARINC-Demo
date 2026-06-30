@@ -77,6 +77,7 @@ function PackageReport({ importedPackage }: { importedPackage: ImportedPackage }
   const packageSize = treeSize(tree)
   const compatibility = validateDeviceCompatibility(manifest, profile, packageSize)
   const readiness = validation.status === 'failed' || compatibility.status === 'failed' ? 'failed' : validation.status === 'warning' || compatibility.status === 'warning' ? 'warning' : 'valid'
+  const [exportMessage,setExportMessage]=useState('')
   return (
     <div className="report-grid">
       <section className="panel summary-panel">
@@ -98,6 +99,8 @@ function PackageReport({ importedPackage }: { importedPackage: ImportedPackage }
         <label>Target device <select value={profileId} onChange={(event) => setProfileId(event.target.value)}><option value="">Select device</option>{profiles.map((item)=><option key={item.id} value={item.id}>{item.name}</option>)}</select></label>
         {profile && <dl className="metadata"><div><dt>Media</dt><dd>{profile.mediaType}</dd></div><div><dt>Root folder</dt><dd>{profile.requiredRootFolder}</dd></div><div><dt>Regions</dt><dd>{profile.supportedRegions.join(', ')}</dd></div><div><dt>Required categories</dt><dd>{profile.requiredCategories.join(', ')}</dd></div><div><dt>Signing</dt><dd>{profile.requiresSignedPackages?'Required':'Not required'}</dd></div><div><dt>Maximum size</dt><dd>{profile.maxPackageSizeMb} MB</dd></div></dl>}
         {compatibility.issues.length ? <IssueList issues={compatibility.issues}/>:<p className="success-copy">Device compatibility passed.</p>}
+        <button disabled={readiness==='failed'||!profile||!importedPackage.sessionId} onClick={()=>{if(profile&&importedPackage.sessionId)void window.aeronav.exportPackage({profileId:profile.id,sessionId:importedPackage.sessionId}).then(result=>setExportMessage(result.kind==='success'?`Exported to ${result.destination}`:result.kind==='failed'?result.message:'Export cancelled'))}}>Export to folder</button>
+        {exportMessage&&<p>{exportMessage}</p>}
       </section>
 
       <section className="panel">
