@@ -20,3 +20,4 @@ Phase 2 validates decoded required fields, identity, dates, safe paths, and chec
 not claim checksum verification because a manifest-only import cannot access declared package files.
 Phase 3 history tests cover atomic round-trip, newest-first ordering, and 100-entry retention.
 Phase 4 accepts diagnostics schema version 1 and orders groups blocking, error, warning, then info.
+Phase 5 accepts only `AERONAV1` base64url JSON payloads and treats compact summaries as non-authoritative.

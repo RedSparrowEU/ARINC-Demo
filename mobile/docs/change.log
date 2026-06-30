@@ -64,3 +64,16 @@ Validation:
 - xcodebuild test: PASS — diagnostics review compiled and tests passed.
 Notes:
 - Reports remain transient; QR bridge remains Phase 5.
+
+2026-06-30 22:06
+Scope: mobile
+Type: feature
+Summary: Add Phase 5 optional compact text and QR diagnostics bridge.
+Files changed:
+- mobile/AeroNavCompanion/
+- mobile/AeroNavCompanionTests/
+Validation:
+- xcodebuild -list: PASS — project and scheme discovered.
+- xcodebuild test: PASS — simulator tests passed.
+Notes:
+- Camera scanning is optional and hidden when VisionKit reports it unavailable.

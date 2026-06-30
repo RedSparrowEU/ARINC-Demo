@@ -77,3 +77,19 @@ Validation:
 - npm run typecheck, lint, test, build: PASS — diagnostics suite passed.
 Notes:
 - Route and chart previews remain Phase 5.
+
+2026-06-30 22:06
+Scope: desktop
+Type: feature
+Summary: Add Phase 5 non-operational route, PDF chart, and compact bridge previews.
+Files changed:
+- desktop/src/
+- desktop/tests/
+- sample-packages/valid-package/
+Validation:
+- npm run typecheck: PASS — TypeScript passed.
+- npm run lint: PASS — ESLint passed.
+- npm run test: PASS — 32 tests passed.
+- npm run build: PASS — Electron Vite built all bundles.
+Notes:
+- Preview data is generated and explicitly non-operational.

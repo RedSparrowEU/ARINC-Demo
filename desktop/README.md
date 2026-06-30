@@ -9,6 +9,7 @@ Phase 2 adds selectable fictional device profiles and compatibility checks; arch
 diagnostics, and operation history remain unimplemented.
 Phase 3 exports validated declared files to a selected folder, verifies copied checksums, and writes `export-log.json`.
 Phase 4 adds portable diagnostics reports and bounded local import/export history.
+Phase 5 adds manifest-declared route and PDF previews plus optional compact companion text.
 
 ## Requirements
 

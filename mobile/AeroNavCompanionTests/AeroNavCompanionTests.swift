@@ -2,6 +2,7 @@ import XCTest
 @testable import AeroNavCompanion
 
 final class AeroNavCompanionTests: XCTestCase {
+    func testCompactSummaryDecodingAndInvalidPrefix() throws { let summary=CompactDiagnosticsSummary(packageId:"ANAV-2607-USA-FD1000",status:"failed",generatedAt:"2026-06-30T00:00:00Z",summary:"Demo",blocking:1,warning:0);let data=try JSONEncoder().encode(summary);let encoded=data.base64EncodedString().replacingOccurrences(of:"+",with:"-").replacingOccurrences(of:"/",with:"_").replacingOccurrences(of:"=",with:"");XCTAssertEqual(try CompactSummaryCodec.decode("AERONAV1:\(encoded)"),summary);XCTAssertThrowsError(try CompactSummaryCodec.decode("invalid")) }
     func testHistoryStoreRoundTripAndRetention() async throws { let url=FileManager.default.temporaryDirectory.appending(path:UUID().uuidString);let store=JSONValidationHistoryStore(url:url);for index in 0..<105 { try await store.append(.init(id:UUID(),attemptedAt:Date(timeIntervalSince1970:TimeInterval(index)),fileName:"m.json",packageId:nil,status:"Failed",issues:[])) };let records=try await JSONValidationHistoryStore(url:url).load();XCTAssertEqual(records.count,100);XCTAssertGreaterThan(records[0].attemptedAt,records[99].attemptedAt);try? FileManager.default.removeItem(at:url) }
     private struct Loader: ManifestLoading { let data: Data; func loadManifest(from url: URL) async throws -> Data { data } }
     private func manifestData(id:String="ANAV-2607-USA-FD1000", path:String="navdata/demo.txt", hash:String=String(repeating:"0",count:64)) -> Data {

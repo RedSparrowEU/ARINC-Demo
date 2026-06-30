@@ -25,3 +25,4 @@ Device profiles and compatibility rules are shared, pure modules. The renderer c
 selected profile without filesystem IPC or rereading the package.
 Phase 3 keeps source paths behind opaque session IDs and performs staged export and verification in the main process.
 Phase 4 centralizes the v1 diagnostics schema and persists atomic bounded operation history in user data.
+Phase 5 keeps preview file access in the main process and exposes only validated route data or size-limited PDF data URLs.
