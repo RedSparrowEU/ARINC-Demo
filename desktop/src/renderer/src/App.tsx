@@ -4,6 +4,10 @@ import type { ValidationIssue } from '@shared/domain/validation-result'
 import { matchingDeviceProfile, validateDeviceCompatibility } from '@shared/services/device-compatibility-validator'
 import type{OperationHistoryRecord}from'@shared/domain/diagnostics-report'
 import type{RoutePreview}from'@shared/domain/preview'
+import {
+  DESKTOP_BRIDGE_UNAVAILABLE_MESSAGE,
+  getOptionalBridge
+} from '@shared/desktop-bridge'
 
 type ScreenState =
   | { kind: 'idle' }
@@ -12,13 +16,22 @@ type ScreenState =
   | { kind: 'completed'; package: ImportedPackage }
 
 export function App(): React.JSX.Element {
+  const desktopApi = getOptionalBridge(window)
   const [state, setState] = useState<ScreenState>({ kind: 'idle' })
   const [history,setHistory]=useState<OperationHistoryRecord[]>([])
 
   async function selectPackage(): Promise<void> {
+    if (!desktopApi) {
+      setState({
+        kind: 'failed',
+        message: DESKTOP_BRIDGE_UNAVAILABLE_MESSAGE,
+        issues: []
+      })
+      return
+    }
     setState({ kind: 'loading' })
     try {
-      const result = await window.aeronav.selectAndImportPackage()
+      const result = await desktopApi.selectAndImportPackage()
       if (result.kind === 'cancelled') setState({ kind: 'idle' })
       else if (result.kind === 'failed') setState(result)
       else setState({ kind: 'completed', package: result.package })
@@ -42,23 +55,38 @@ export function App(): React.JSX.Element {
         <button onClick={() => void selectPackage()} disabled={state.kind === 'loading'}>
           {state.kind === 'loading' ? 'Validating…' : state.kind === 'completed' ? 'Choose another folder' : 'Select package folder'}
         </button>
-        <button onClick={()=>void window.aeronav.getOperationHistory().then(setHistory)}>Load history</button>
+        <button
+          onClick={() => {
+            if (!desktopApi) {
+              setState({
+                kind: 'failed',
+                message: DESKTOP_BRIDGE_UNAVAILABLE_MESSAGE,
+                issues: []
+              })
+              return
+            }
+            void desktopApi.getOperationHistory().then(setHistory)
+          }}
+        >
+          Load history
+        </button>
       </header>
 
-      {state.kind === 'idle' && <EmptyState />}
+      {state.kind === 'idle' && <EmptyState hasDesktopBridge={Boolean(desktopApi)} />}
       {state.kind === 'loading' && <section className="panel"><p>Reading untrusted package contents and calculating SHA-256 checksums…</p></section>}
       {state.kind === 'failed' && <FailureState message={state.message} issues={state.issues} />}
-      {state.kind === 'completed' && <PackageReport importedPackage={state.package} />}
+      {state.kind === 'completed' && desktopApi && <PackageReport importedPackage={state.package} desktopApi={desktopApi} />}
       {history.length>0&&<section className="panel"><h2>Operation history</h2>{history.map(item=><p key={item.id}>{item.attemptedAt} · {item.type} · {item.status} · {item.summary}</p>)}</section>}
     </main>
   )
 }
 
-function EmptyState(): React.JSX.Element {
+function EmptyState({ hasDesktopBridge }: { hasDesktopBridge: boolean }): React.JSX.Element {
   return (
     <section className="panel empty-state">
       <h2>No package selected</h2>
       <p>Select a folder containing <code>manifest.json</code>. Archive import and device compatibility are outside Phase 1.</p>
+      {!hasDesktopBridge && <p>{DESKTOP_BRIDGE_UNAVAILABLE_MESSAGE}</p>}
     </section>
   )
 }
@@ -73,9 +101,15 @@ function FailureState({ message, issues }: { message: string; issues: Validation
   )
 }
 
-function PackageReport({ importedPackage }: { importedPackage: ImportedPackage }): React.JSX.Element {
+function PackageReport({
+  importedPackage,
+  desktopApi
+}: {
+  importedPackage: ImportedPackage
+  desktopApi: NonNullable<ReturnType<typeof getOptionalBridge<typeof window.aeronav>>>
+}): React.JSX.Element {
   const { manifest, validation, tree } = importedPackage
-  const profiles = window.aeronav.getDeviceProfiles()
+  const profiles = desktopApi.getDeviceProfiles()
   const initial = matchingDeviceProfile(manifest, profiles)
   const [profileId, setProfileId] = useState(initial?.id ?? '')
   const profile = profiles.find((item) => item.id === profileId)
@@ -106,8 +140,8 @@ function PackageReport({ importedPackage }: { importedPackage: ImportedPackage }
         <label>Target device <select value={profileId} onChange={(event) => setProfileId(event.target.value)}><option value="">Select device</option>{profiles.map((item)=><option key={item.id} value={item.id}>{item.name}</option>)}</select></label>
         {profile && <dl className="metadata"><div><dt>Media</dt><dd>{profile.mediaType}</dd></div><div><dt>Root folder</dt><dd>{profile.requiredRootFolder}</dd></div><div><dt>Regions</dt><dd>{profile.supportedRegions.join(', ')}</dd></div><div><dt>Required categories</dt><dd>{profile.requiredCategories.join(', ')}</dd></div><div><dt>Signing</dt><dd>{profile.requiresSignedPackages?'Required':'Not required'}</dd></div><div><dt>Maximum size</dt><dd>{profile.maxPackageSizeMb} MB</dd></div></dl>}
         {compatibility.issues.length ? <IssueList issues={compatibility.issues}/>:<p className="success-copy">Device compatibility passed.</p>}
-        <button disabled={readiness==='failed'||!profile||!importedPackage.sessionId} onClick={()=>{if(profile&&importedPackage.sessionId)void window.aeronav.exportPackage({profileId:profile.id,sessionId:importedPackage.sessionId}).then(result=>setExportMessage(result.kind==='success'?`Exported to ${result.destination}`:result.kind==='failed'?result.message:'Export cancelled'))}}>Export to folder</button>
-        <button disabled={!importedPackage.sessionId} onClick={()=>{if(importedPackage.sessionId)void window.aeronav.saveDiagnostics(importedPackage.sessionId).then(saved=>setExportMessage(saved?'Diagnostics saved':'Diagnostics save cancelled'))}}>Save diagnostics</button>
+        <button disabled={readiness==='failed'||!profile||!importedPackage.sessionId} onClick={()=>{if(profile&&importedPackage.sessionId)void desktopApi.exportPackage({profileId:profile.id,sessionId:importedPackage.sessionId}).then(result=>setExportMessage(result.kind==='success'?`Exported to ${result.destination}`:result.kind==='failed'?result.message:'Export cancelled'))}}>Export to folder</button>
+        <button disabled={!importedPackage.sessionId} onClick={()=>{if(importedPackage.sessionId)void desktopApi.saveDiagnostics(importedPackage.sessionId).then(saved=>setExportMessage(saved?'Diagnostics saved':'Diagnostics save cancelled'))}}>Save diagnostics</button>
         {exportMessage&&<p>{exportMessage}</p>}
       </section>
 
@@ -115,7 +149,7 @@ function PackageReport({ importedPackage }: { importedPackage: ImportedPackage }
         <div className="section-heading"><h2>Validation report</h2><span>{validation.issues.length} issues</span></div>
         {validation.issues.length === 0 ? <p className="success-copy">All Phase 1 checks passed.</p> : <IssueList issues={validation.issues} />}
       </section>
-      {(previewPath||chartPath)&&<section className="panel summary-panel"><div className="section-heading"><h2>Non-operational previews</h2><span>demo visualization only</span></div>{previewPath&&<button onClick={()=>{if(importedPackage.sessionId)void window.aeronav.loadRoutePreview(importedPackage.sessionId,previewPath).then(r=>{if(r.kind==='success')setRoute(r.value)})}}>Load route preview</button>}{chartPath&&<button onClick={()=>{if(importedPackage.sessionId)void window.aeronav.loadChartPreview(importedPackage.sessionId,chartPath).then(r=>{if(r.kind==='success')setChart(r.value)})}}>Load PDF chart</button>}{route&&<RouteMap route={route}/>} {chart&&<iframe className="chart-preview" title="Non-operational demo chart" src={chart}/>}</section>}
+      {(previewPath||chartPath)&&<section className="panel summary-panel"><div className="section-heading"><h2>Non-operational previews</h2><span>demo visualization only</span></div>{previewPath&&<button onClick={()=>{if(importedPackage.sessionId)void desktopApi.loadRoutePreview(importedPackage.sessionId,previewPath).then(r=>{if(r.kind==='success')setRoute(r.value)})}}>Load route preview</button>}{chartPath&&<button onClick={()=>{if(importedPackage.sessionId)void desktopApi.loadChartPreview(importedPackage.sessionId,chartPath).then(r=>{if(r.kind==='success')setChart(r.value)})}}>Load PDF chart</button>}{route&&<RouteMap route={route}/>} {chart&&<iframe className="chart-preview" title="Non-operational demo chart" src={chart}/>}</section>}
       <section className="panel summary-panel"><div className="section-heading"><h2>Optional companion bridge</h2><span>compact text / QR payload</span></div><button onClick={()=>{const issues=[...validation.issues,...compatibility.issues];const payload={packageId:manifest.packageId,status:readiness,generatedAt:new Date().toISOString(),summary:`${issues.length} issues`,blocking:issues.filter(i=>i.severity==='blocking').length,warning:issues.filter(i=>i.severity==='warning').length};setBridgeText(`AERONAV1:${btoa(JSON.stringify(payload)).replaceAll('+','-').replaceAll('/','_').replaceAll('=','')}`)}}>Generate companion text</button>{bridgeText&&<textarea readOnly value={bridgeText} rows={5} aria-label="Compact companion summary"/>}</section>
 
       <section className="panel">
