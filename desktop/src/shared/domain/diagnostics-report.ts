@@ -1,0 +1,4 @@
+import type { ExportFileResult } from './export-result';import type{ValidationSeverity,ValidationStatus}from'./validation-result'
+export interface DiagnosticsIssue{code:string;severity:ValidationSeverity;message:string;path?:string;suggestedAction:string}
+export interface DiagnosticsReport{schemaVersion:1;reportId:string;generatedAt:string;application:{name:string;version:string;platform:string};operation:{type:'validation'|'export';status:ValidationStatus};package:{packageId:string;cycle:string;region:string;targetDevice:string};deviceProfile?:{id:string;name:string};summary:Record<ValidationSeverity|'total',number>;issues:DiagnosticsIssue[];exportFiles?:ExportFileResult[]}
+export interface OperationHistoryRecord{ id:string;attemptedAt:string;type:'import'|'export';packageId?:string;status:string;summary:string;logPath?:string }

@@ -30,3 +30,4 @@ later roadmap phases and are intentionally excluded.
 Phase 2 compatibility validates selected target identity, region, declared categories, optional
 manifest media type, signing requirements, and total package size against checked-in demo profiles.
 Phase 3 revalidates before copying and requires every exported declared file checksum to match.
+Phase 4 verifies report schema, severity summaries, suggested actions, and operation-history retention.

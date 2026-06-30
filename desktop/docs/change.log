@@ -65,3 +65,15 @@ Validation:
 - npm run typecheck, lint, test, build: PASS — export suite passed.
 Notes:
 - Diagnostics and operation history remain deferred.
+
+2026-06-30 18:23
+Scope: desktop
+Type: feature
+Summary: Add Phase 4 diagnostics reports, QA coverage, and operation history.
+Files changed:
+- desktop/src/
+- desktop/tests/
+Validation:
+- npm run typecheck, lint, test, build: PASS — diagnostics suite passed.
+Notes:
+- Route and chart previews remain Phase 5.

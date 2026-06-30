@@ -707,6 +707,7 @@ imports and validates manifest JSON through the iOS document picker. Desktop exp
 offline history remain later phases.
 Phase 3 is implemented: desktop exports verified declared files and a versioned export log to a
 selected folder, and mobile persists the newest 100 validation attempts in an atomic local store.
+Phase 4 is implemented: desktop emits v1 diagnostics and keeps operation history, while mobile imports and reviews diagnostics by severity.
 
 ## Demo script for interviews
 
