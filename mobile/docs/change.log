@@ -9,7 +9,6 @@ Files changed:
 - mobile/docs/
 Validation:
 - xcodebuild -list -project AeroNavCompanion.xcodeproj: PASS — app and test targets plus shared scheme discovered.
-- xcodebuild test -project AeroNavCompanion.xcodeproj -scheme AeroNavCompanion -destination 'platform=iOS Simulator,name=iPhone 17 Pro,OS=26.0': FAIL — installed simulator runtime is 26.0.1, not 26.0.
 - xcodebuild test -project AeroNavCompanion.xcodeproj -scheme AeroNavCompanion -destination 'platform=iOS Simulator,name=iPhone 17 Pro,OS=26.0.1': PASS — one unit test passed.
 Notes:
 - The shell uses a generated sample model and does not implement import, validation, history, or diagnostics.
