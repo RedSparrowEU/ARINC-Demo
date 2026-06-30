@@ -16,6 +16,9 @@
 		A10000000000000000000008 /* SampleManifests in Resources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000008 /* SampleManifests */; };
 		A10000000000000000000009 /* AeroNavCompanionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000009 /* AeroNavCompanionTests.swift */; };
 		A1000000000000000000000A /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A2000000000000000000000A /* XCTest.framework */; };
+		A1000000000000000000000B /* PackageDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000000000000000000000D /* PackageDetailsView.swift */; };
+		A1000000000000000000000C /* PackageDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000000000000000000000E /* PackageDetailsViewModel.swift */; };
+		A1000000000000000000000D /* SamplePackages.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000000000000000000000F /* SamplePackages.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -35,6 +38,9 @@
 		A2000000000000000000000A /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = System/Library/Frameworks/XCTest.framework; sourceTree = SDKROOT; };
 		A2000000000000000000000B /* AeroNavCompanion.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AeroNavCompanion.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A2000000000000000000000C /* AeroNavCompanionTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AeroNavCompanionTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		A2000000000000000000000D /* PackageDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PackageDetailsView.swift; sourceTree = "<group>"; };
+		A2000000000000000000000E /* PackageDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PackageDetailsViewModel.swift; sourceTree = "<group>"; };
+		A2000000000000000000000F /* SamplePackages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SamplePackages.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -46,12 +52,13 @@
 		A70000000000000000000001 = {isa = PBXGroup; children = (A70000000000000000000002 /* AeroNavCompanion */, A70000000000000000000009 /* AeroNavCompanionTests */, A7000000000000000000000A /* Frameworks */, A7000000000000000000000B /* Products */); sourceTree = "<group>"; };
 		A70000000000000000000002 /* AeroNavCompanion */ = {isa = PBXGroup; path = AeroNavCompanion; sourceTree = "<group>"; children = (A70000000000000000000003 /* App */, A70000000000000000000004 /* Presentation */, A70000000000000000000005 /* Domain */, A70000000000000000000006 /* Services */, A70000000000000000000007 /* Persistence */, A70000000000000000000008 /* Resources */); };
 		A70000000000000000000003 /* App */ = {isa = PBXGroup; path = App; sourceTree = "<group>"; children = (A20000000000000000000001 /* AeroNavCompanionApp.swift */,); };
-		A70000000000000000000004 /* Presentation */ = {isa = PBXGroup; path = Presentation; sourceTree = "<group>"; children = (A7000000000000000000000C /* PackageList */,); };
+		A70000000000000000000004 /* Presentation */ = {isa = PBXGroup; path = Presentation; sourceTree = "<group>"; children = (A7000000000000000000000C /* PackageList */, A7000000000000000000000D /* PackageDetails */,); };
 		A7000000000000000000000C /* PackageList */ = {isa = PBXGroup; path = PackageList; sourceTree = "<group>"; children = (A20000000000000000000003 /* PackageListView.swift */, A20000000000000000000004 /* PackageListViewModel.swift */,); };
+		A7000000000000000000000D /* PackageDetails */ = {isa = PBXGroup; path = PackageDetails; sourceTree = "<group>"; children = (A2000000000000000000000D /* PackageDetailsView.swift */, A2000000000000000000000E /* PackageDetailsViewModel.swift */,); };
 		A70000000000000000000005 /* Domain */ = {isa = PBXGroup; path = Domain; sourceTree = "<group>"; children = (A20000000000000000000002 /* NavigationPackage.swift */,); };
 		A70000000000000000000006 /* Services */ = {isa = PBXGroup; path = Services; sourceTree = "<group>"; children = (A20000000000000000000005 /* ManifestLoading.swift */,); };
 		A70000000000000000000007 /* Persistence */ = {isa = PBXGroup; path = Persistence; sourceTree = "<group>"; children = (A20000000000000000000006 /* ValidationHistoryStoring.swift */,); };
-		A70000000000000000000008 /* Resources */ = {isa = PBXGroup; path = Resources; sourceTree = "<group>"; children = (A20000000000000000000007 /* Assets.xcassets */, A20000000000000000000008 /* SampleManifests */,); };
+		A70000000000000000000008 /* Resources */ = {isa = PBXGroup; path = Resources; sourceTree = "<group>"; children = (A2000000000000000000000F /* SamplePackages.swift */, A20000000000000000000007 /* Assets.xcassets */, A20000000000000000000008 /* SampleManifests */,); };
 		A70000000000000000000009 /* AeroNavCompanionTests */ = {isa = PBXGroup; path = AeroNavCompanionTests; sourceTree = "<group>"; children = (A20000000000000000000009 /* AeroNavCompanionTests.swift */,); };
 		A7000000000000000000000A /* Frameworks */ = {isa = PBXGroup; children = (A2000000000000000000000A /* XCTest.framework */,); name = Frameworks; sourceTree = "<group>"; };
 		A7000000000000000000000B /* Products */ = {isa = PBXGroup; children = (A2000000000000000000000B /* AeroNavCompanion.app */, A2000000000000000000000C /* AeroNavCompanionTests.xctest */,); name = Products; sourceTree = "<group>"; };
@@ -72,7 +79,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		A90000000000000000000001 /* Sources */ = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (A10000000000000000000001, A10000000000000000000002, A10000000000000000000003, A10000000000000000000004, A10000000000000000000005, A10000000000000000000006,); runOnlyForDeploymentPostprocessing = 0; };
+		A90000000000000000000001 /* Sources */ = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (A10000000000000000000001, A10000000000000000000002, A10000000000000000000003, A10000000000000000000004, A10000000000000000000005, A10000000000000000000006, A1000000000000000000000B, A1000000000000000000000C, A1000000000000000000000D,); runOnlyForDeploymentPostprocessing = 0; };
 		A90000000000000000000002 /* Sources */ = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (A10000000000000000000009,); runOnlyForDeploymentPostprocessing = 0; };
 /* End PBXSourcesBuildPhase section */
 

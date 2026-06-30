@@ -13,5 +13,9 @@ SwiftUI view → observable view model → service/repository protocol → concr
 - `Persistence/` owns validation-history storage implementations.
 - `Resources/` owns previews and clearly labeled generated demo data.
 
-File parsing and checksum work must remain off the main actor. The scaffold intentionally does not
-define a production manifest decoder or validation contract.
+Phase 1 sample models live in `Resources/SamplePackages.swift`, outside SwiftUI views. The list view
+model owns the displayed package collection, while the details view model groups and sorts files and
+formats the effective period. Views only render those states and navigation.
+
+File parsing and checksum work must remain off the main actor when introduced. Phase 1 intentionally
+does not define a production manifest decoder or validation contract.
