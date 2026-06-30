@@ -18,3 +18,4 @@ package contents. Statuses are static display values until Phase 2 introduces ma
 
 Phase 2 validates decoded required fields, identity, dates, safe paths, and checksum syntax. It does
 not claim checksum verification because a manifest-only import cannot access declared package files.
+Phase 3 history tests cover atomic round-trip, newest-first ordering, and 100-entry retention.
