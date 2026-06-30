@@ -23,3 +23,4 @@ does not define a production manifest decoder or validation contract.
 Phase 2 adds a security-scoped loader and asynchronous import service. The view model owns transient
 import state and in-memory upsert behavior; no persistence is introduced.
 Phase 3 injects an actor-backed atomic JSON history store into import and history view models.
+Phase 4 decodes the desktop v1 diagnostics schema and keeps the selected report transient.

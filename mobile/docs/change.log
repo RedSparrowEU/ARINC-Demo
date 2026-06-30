@@ -53,3 +53,14 @@ Validation:
 - xcodebuild test: PASS — history and existing tests passed.
 Notes:
 - Diagnostics remain deferred to Phase 4.
+
+2026-06-30 18:23
+Scope: mobile
+Type: feature
+Summary: Add Phase 4 diagnostics import and severity review.
+Files changed:
+- mobile/AeroNavCompanion/
+Validation:
+- xcodebuild test: PASS — diagnostics review compiled and tests passed.
+Notes:
+- Reports remain transient; QR bridge remains Phase 5.
