@@ -53,3 +53,15 @@ Validation:
 - npm run build: PASS — Electron Vite built all bundles.
 Notes:
 - Export remains deferred to Phase 3.
+
+2026-06-30 18:15
+Scope: desktop
+Type: feature
+Summary: Add Phase 3 verified folder export and export log.
+Files changed:
+- desktop/src/
+- desktop/tests/
+Validation:
+- npm run typecheck, lint, test, build: PASS — export suite passed.
+Notes:
+- Diagnostics and operation history remain deferred.

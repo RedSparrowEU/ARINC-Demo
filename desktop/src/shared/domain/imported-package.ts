@@ -12,6 +12,7 @@ export interface FileTreeNode {
 }
 
 export interface ImportedPackage {
+  sessionId?: string
   rootName: string
   manifest: PackageManifest
   tree: FileTreeNode[]
