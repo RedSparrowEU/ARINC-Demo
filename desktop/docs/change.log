@@ -151,3 +151,18 @@ Validation:
 - npm run build: PASS — Electron Vite built all desktop bundles.
 Notes:
 - All desktop buttons now use a 12px right margin so adjacent actions no longer touch.
+
+2026-06-30 23:09
+Scope: desktop
+Type: fix
+Summary: Scroll the loaded operation-history card into view.
+Files changed:
+- desktop/src/renderer/src/App.tsx
+- desktop/docs/PR/2026-06-30_2309_desktop-history-scroll.md
+- desktop/docs/change.log
+Validation:
+- npm run typecheck: PASS — TypeScript passed for the desktop main and renderer projects.
+- npm run lint: PASS — ESLint reported no issues.
+- npm run test: PASS — 33 tests passed across 10 files.
+Notes:
+- Scrolling occurs only after one or more history records render; initial and empty history remain unchanged.
