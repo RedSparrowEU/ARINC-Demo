@@ -114,3 +114,25 @@ Validation:
 - xcodebuild test -project AeroNavCompanion.xcodeproj -scheme AeroNavCompanion -destination 'platform=iOS Simulator,name=iPhone 17 Pro,OS=26.0.1': PASS — all 10 tests passed.
 Notes:
 - The default device name is configurable with the SIMULATOR make variable; build output remains under the ignored mobile/.build directory.
+
+2026-06-30 23:24
+Scope: mobile
+Type: feature
+Summary: Add a visible QR reader action and automatically accept recognized companion codes.
+Files changed:
+- mobile/AeroNavCompanion/Presentation/Bridge/CompanionBridgeView.swift
+- mobile/AeroNavCompanionTests/AeroNavCompanionTests.swift
+- mobile/README.md
+- mobile/docs/architecture.md
+- mobile/docs/PR/2026-06-30_2319_companion-qr-reader.md
+- mobile/docs/change.log
+- README.md
+Validation:
+- xcodebuild -list -project AeroNavCompanion.xcodeproj: PASS — app, test target, and shared scheme discovered.
+- xcodebuild test -project AeroNavCompanion.xcodeproj -scheme AeroNavCompanion -destination 'platform=iOS Simulator,name=iPhone 17 Pro,OS=26.0.1': PASS — all 11 tests passed.
+- xcodebuild build -project AeroNavCompanion.xcodeproj -scheme AeroNavCompanion -destination 'platform=iOS Simulator,name=iPhone 17 Pro,OS=26.0.1': PASS — Debug simulator build succeeded.
+- xcrun simctl install/launch and simulator screenshot: PASS — app launched and the Companion Bridge QR toolbar icon rendered.
+- Physical-device QR camera scan: SKIPPED — no supported physical iOS device was connected.
+Notes:
+- Simulator and unsupported-device users see a disabled QR action with an availability explanation.
+- Camera scanning stops after the first recognized QR value and reuses the manual decoder.

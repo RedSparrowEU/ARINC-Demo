@@ -4,6 +4,7 @@ import type { ValidationIssue } from '@shared/domain/validation-result'
 import { matchingDeviceProfile, validateDeviceCompatibility } from '@shared/services/device-compatibility-validator'
 import type{OperationHistoryRecord}from'@shared/domain/diagnostics-report'
 import type{RoutePreview}from'@shared/domain/preview'
+import { encodeCompanionSummary, generateCompanionQr } from '@shared/services/companion-bridge'
 
 type ScreenState =
   | { kind: 'idle' }
@@ -105,6 +106,15 @@ function PackageReport({
   const [exportMessage,setExportMessage]=useState('')
   const [route,setRoute]=useState<RoutePreview>();const[chart,setChart]=useState<string>();const previewPath=manifest.files.find(f=>f.path.endsWith('route-preview.json'))?.path;const chartPath=manifest.files.find(f=>f.category==='charts'&&f.path.toLowerCase().endsWith('.pdf'))?.path
   const [bridgeText,setBridgeText]=useState('')
+  const [bridgeQr,setBridgeQr]=useState('')
+  const [bridgeError,setBridgeError]=useState('')
+  async function generateCompanion(): Promise<void> {
+    const issues=[...validation.issues,...compatibility.issues]
+    const payload=encodeCompanionSummary({packageId:manifest.packageId,status:readiness,generatedAt:new Date().toISOString(),summary:`${issues.length} issues`,blocking:issues.filter(i=>i.severity==='blocking').length,warning:issues.filter(i=>i.severity==='warning').length})
+    setBridgeText(payload);setBridgeError('')
+    try { setBridgeQr(await generateCompanionQr(payload)) }
+    catch { setBridgeQr('');setBridgeError('QR generation failed. The compact companion text remains available.') }
+  }
   return (
     <div className="report-grid">
       <section className="panel summary-panel">
@@ -136,7 +146,7 @@ function PackageReport({
         {validation.issues.length === 0 ? <p className="success-copy">All Phase 1 checks passed.</p> : <IssueList issues={validation.issues} />}
       </section>
       {(previewPath||chartPath)&&<section className="panel summary-panel"><div className="section-heading"><h2>Non-operational previews</h2><span>demo visualization only</span></div>{previewPath&&<button onClick={()=>{if(importedPackage.sessionId)void desktopApi.loadRoutePreview(importedPackage.sessionId,previewPath).then(r=>{if(r.kind==='success')setRoute(r.value)})}}>Load route preview</button>}{chartPath&&<button onClick={()=>{if(importedPackage.sessionId)void desktopApi.loadChartPreview(importedPackage.sessionId,chartPath).then(r=>{if(r.kind==='success')setChart(r.value)})}}>Load PDF chart</button>}{route&&<RouteMap route={route}/>} {chart&&<iframe className="chart-preview" title="Non-operational demo chart" src={chart}/>}</section>}
-      <section className="panel summary-panel"><div className="section-heading"><h2>Optional companion bridge</h2><span>compact text / QR payload</span></div><button onClick={()=>{const issues=[...validation.issues,...compatibility.issues];const payload={packageId:manifest.packageId,status:readiness,generatedAt:new Date().toISOString(),summary:`${issues.length} issues`,blocking:issues.filter(i=>i.severity==='blocking').length,warning:issues.filter(i=>i.severity==='warning').length};setBridgeText(`AERONAV1:${btoa(JSON.stringify(payload)).replaceAll('+','-').replaceAll('/','_').replaceAll('=','')}`)}}>Generate companion text</button>{bridgeText&&<textarea readOnly value={bridgeText} rows={5} aria-label="Compact companion summary"/>}</section>
+      <section className="panel summary-panel"><div className="section-heading"><h2>Optional companion bridge</h2><span>compact text / QR payload</span></div><button onClick={() => void generateCompanion()}>Generate Companion</button>{bridgeText&&<div className="companion-output">{bridgeQr&&<img src={bridgeQr} alt="QR code containing the compact companion summary"/>}<div><textarea readOnly value={bridgeText} rows={5} aria-label="Compact companion summary"/><p className="summary">NON-OPERATIONAL DEMO — compact summaries do not replace the full diagnostics report.</p></div></div>}{bridgeError&&<p role="alert">{bridgeError}</p>}</section>
 
       <section className="panel">
         <div className="section-heading"><h2>Declared files</h2><span>{validation.files.length}</span></div>

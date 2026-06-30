@@ -25,3 +25,5 @@ import state and in-memory upsert behavior; no persistence is introduced.
 Phase 3 injects an actor-backed atomic JSON history store into import and history view models.
 Phase 4 decodes the desktop v1 diagnostics schema and keeps the selected report transient.
 Phase 5 isolates the optional compact bridge and uses VisionKit only when scanning is supported and available.
+The bridge exposes scanner availability in the UI and forwards the first automatically recognized QR value
+to the same view-model decoding path used by manual text entry.
