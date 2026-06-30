@@ -9,10 +9,15 @@ build/
 coverage/
 .eslintcache
 *.log
+*.tsbuildinfo
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
+
+# Required repository changelogs
+!desktop/docs/change.log
+!mobile/docs/change.log
 
 # Electron packaging output
 release/
