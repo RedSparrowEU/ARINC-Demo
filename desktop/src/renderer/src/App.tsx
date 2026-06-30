@@ -4,10 +4,6 @@ import type { ValidationIssue } from '@shared/domain/validation-result'
 import { matchingDeviceProfile, validateDeviceCompatibility } from '@shared/services/device-compatibility-validator'
 import type{OperationHistoryRecord}from'@shared/domain/diagnostics-report'
 import type{RoutePreview}from'@shared/domain/preview'
-import {
-  DESKTOP_BRIDGE_UNAVAILABLE_MESSAGE,
-  getOptionalBridge
-} from '@shared/desktop-bridge'
 
 type ScreenState =
   | { kind: 'idle' }
@@ -16,19 +12,11 @@ type ScreenState =
   | { kind: 'completed'; package: ImportedPackage }
 
 export function App(): React.JSX.Element {
-  const desktopApi = getOptionalBridge(window)
+  const desktopApi = window.aeronav
   const [state, setState] = useState<ScreenState>({ kind: 'idle' })
   const [history,setHistory]=useState<OperationHistoryRecord[]>([])
 
   async function selectPackage(): Promise<void> {
-    if (!desktopApi) {
-      setState({
-        kind: 'failed',
-        message: DESKTOP_BRIDGE_UNAVAILABLE_MESSAGE,
-        issues: []
-      })
-      return
-    }
     setState({ kind: 'loading' })
     try {
       const result = await desktopApi.selectAndImportPackage()
@@ -57,14 +45,6 @@ export function App(): React.JSX.Element {
         </button>
         <button
           onClick={() => {
-            if (!desktopApi) {
-              setState({
-                kind: 'failed',
-                message: DESKTOP_BRIDGE_UNAVAILABLE_MESSAGE,
-                issues: []
-              })
-              return
-            }
             void desktopApi.getOperationHistory().then(setHistory)
           }}
         >
@@ -72,7 +52,7 @@ export function App(): React.JSX.Element {
         </button>
       </header>
 
-      {state.kind === 'idle' && <EmptyState hasDesktopBridge={Boolean(desktopApi)} />}
+      {state.kind === 'idle' && <EmptyState />}
       {state.kind === 'loading' && <section className="panel"><p>Reading untrusted package contents and calculating SHA-256 checksums…</p></section>}
       {state.kind === 'failed' && <FailureState message={state.message} issues={state.issues} />}
       {state.kind === 'completed' && desktopApi && <PackageReport importedPackage={state.package} desktopApi={desktopApi} />}
@@ -81,12 +61,11 @@ export function App(): React.JSX.Element {
   )
 }
 
-function EmptyState({ hasDesktopBridge }: { hasDesktopBridge: boolean }): React.JSX.Element {
+function EmptyState(): React.JSX.Element {
   return (
     <section className="panel empty-state">
       <h2>No package selected</h2>
       <p>Select a folder containing <code>manifest.json</code>. Archive import and device compatibility are outside Phase 1.</p>
-      {!hasDesktopBridge && <p>{DESKTOP_BRIDGE_UNAVAILABLE_MESSAGE}</p>}
     </section>
   )
 }
@@ -106,7 +85,7 @@ function PackageReport({
   desktopApi
 }: {
   importedPackage: ImportedPackage
-  desktopApi: NonNullable<ReturnType<typeof getOptionalBridge<typeof window.aeronav>>>
+  desktopApi: typeof window.aeronav
 }): React.JSX.Element {
   const { manifest, validation, tree } = importedPackage
   const profiles = desktopApi.getDeviceProfiles()
