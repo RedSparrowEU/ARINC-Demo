@@ -1,0 +1,45 @@
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Node and Electron
+node_modules/
+dist/
+build/
+coverage/
+.eslintcache
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Electron packaging output
+release/
+out/
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Xcode and Swift
+DerivedData/
+*.xcuserstate
+*.xcworkspace/xcuserdata/
+*.xcodeproj/xcuserdata/
+.build/
+Packages/
+Package.resolved
+
+# iOS simulator and archives
+*.ipa
+*.dSYM.zip
+*.dSYM
+*.xcarchive
+
+# Editor files
+.idea/
+.vscode/
+*.swp
+*.swo
