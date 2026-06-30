@@ -19,3 +19,6 @@ formats the effective period. Views only render those states and navigation.
 
 File parsing and checksum work must remain off the main actor when introduced. Phase 1 intentionally
 does not define a production manifest decoder or validation contract.
+
+Phase 2 adds a security-scoped loader and asynchronous import service. The view model owns transient
+import state and in-memory upsert behavior; no persistence is introduced.

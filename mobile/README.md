@@ -6,6 +6,8 @@ grouped by category.
 
 The sample statuses are display data. Document import, manifest decoding, mobile validation,
 history, and diagnostics parsing are not implemented.
+Phase 2 imports JSON manifests through the document picker and keeps results in memory. Offline
+history and diagnostics remain unimplemented.
 
 ## Requirements
 

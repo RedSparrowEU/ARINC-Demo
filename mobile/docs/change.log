@@ -27,3 +27,17 @@ Validation:
 - xcodebuild test -project AeroNavCompanion.xcodeproj -scheme AeroNavCompanion -destination 'platform=iOS Simulator,name=iPhone 17 Pro,OS=26.0.1': PASS — five unit tests passed.
 Notes:
 - Statuses are static display samples; document import, manifest decoding, validation, persistence, and diagnostics remain deferred.
+
+2026-06-30 17:58
+Scope: mobile
+Type: feature
+Summary: Add Phase 2 document-based manifest import and validation.
+Files changed:
+- mobile/AeroNavCompanion/
+- mobile/AeroNavCompanionTests/
+- mobile/docs/
+Validation:
+- xcodebuild -list -project AeroNavCompanion.xcodeproj: PASS — project discovered.
+- xcodebuild test -project AeroNavCompanion.xcodeproj -scheme AeroNavCompanion -destination 'platform=iOS Simulator,name=iPhone 17 Pro,OS=26.0.1': PASS — tests passed.
+Notes:
+- Imported packages remain in memory; persistence begins in Phase 3.

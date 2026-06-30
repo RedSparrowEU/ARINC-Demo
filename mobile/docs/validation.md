@@ -15,3 +15,6 @@ validation mapping, persistence, diagnostics decoding, and view-model state tran
 Phase 1 unit coverage verifies representative valid/warning/failed samples, injected list data,
 metadata and effective-period presentation, deterministic category grouping, file sorting, and empty
 package contents. Statuses are static display values until Phase 2 introduces manifest import.
+
+Phase 2 validates decoded required fields, identity, dates, safe paths, and checksum syntax. It does
+not claim checksum verification because a manifest-only import cannot access declared package files.

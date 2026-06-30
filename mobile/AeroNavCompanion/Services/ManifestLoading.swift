@@ -6,7 +6,9 @@ protocol ManifestLoading: Sendable {
 
 struct LocalManifestLoader: ManifestLoading {
     func loadManifest(from url: URL) async throws -> Data {
-        try await Task.detached(priority: .userInitiated) {
+        let scoped = url.startAccessingSecurityScopedResource()
+        defer { if scoped { url.stopAccessingSecurityScopedResource() } }
+        return try await Task.detached(priority: .userInitiated) {
             try Data(contentsOf: url)
         }.value
     }
