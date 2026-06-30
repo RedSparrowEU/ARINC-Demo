@@ -10,7 +10,8 @@ Phase 2 imports JSON manifests through the document picker and keeps results in 
 history and diagnostics remain unimplemented.
 Phase 3 stores the newest 100 validation attempts offline in an atomic versioned JSON file.
 Phase 4 imports desktop `diagnostics-report.json` files and groups issues with suggested actions.
-Phase 5 adds optional `AERONAV1` text decoding and VisionKit QR scanning on supported devices.
+Phase 5 adds optional `AERONAV1` text decoding and automatic VisionKit QR scanning on supported
+physical devices. Unsupported environments keep the reader action visible with an availability message.
 
 ## Requirements
 

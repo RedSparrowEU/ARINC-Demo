@@ -166,3 +166,25 @@ Validation:
 - npm run test: PASS — 33 tests passed across 10 files.
 Notes:
 - Scrolling occurs only after one or more history records render; initial and empty history remain unchanged.
+
+2026-06-30 23:24
+Scope: desktop
+Type: feature
+Summary: Generate a companion QR code and remember the last imported package folder.
+Files changed:
+- desktop/src/
+- desktop/tests/
+- desktop/package.json
+- desktop/package-lock.json
+- desktop/README.md
+- desktop/docs/PR/2026-06-30_2319_companion-qr-folder-memory.md
+- desktop/docs/change.log
+- README.md
+Validation:
+- npm run typecheck: PASS — TypeScript passed for main, preload, shared, and renderer code.
+- npm run lint: PASS — ESLint reported no issues.
+- npm run test: PASS — 36 tests passed across 12 files.
+- npm run build: PASS — Electron Vite built all desktop bundles.
+Notes:
+- The QR and compact text encode the same `AERONAV1:` payload.
+- Folder state updates only after a successful import and inaccessible persisted paths are ignored.
