@@ -113,3 +113,41 @@ Validation:
 Notes:
 - The `dev` script now strips `ELECTRON_RUN_AS_NODE` so Electron startup does not depend on shell cleanup.
 - The new message is specific to a missing Electron bridge so browser-only rendering no longer reports a raw JavaScript property error.
+
+2026-06-30 22:35
+Scope: desktop
+Type: fix
+Summary: Load the sandboxed Electron preload bridge as CommonJS so desktop folder selection works.
+Files changed:
+- desktop/electron.vite.config.ts
+- desktop/src/main/index.ts
+- desktop/src/renderer/src/App.tsx
+- desktop/src/shared/desktop-bridge.ts
+- desktop/tests/desktop-api.test.ts
+- desktop/tests/preload-config.test.ts
+- desktop/docs/PR/2026-06-30_2235_fix-sandboxed-preload.md
+- desktop/docs/change.log
+Validation:
+- npm run typecheck: PASS — main, preload, renderer, shared, and test TypeScript passed.
+- npm run lint: PASS — ESLint reported no issues.
+- npm run test: PASS — 33 tests passed across 10 files.
+- npm run build: PASS — Electron Vite emitted the preload as out/preload/index.js and built all bundles.
+- ELECTRON_ENABLE_LOGGING=1 npm run dev: PASS — Electron loaded the CommonJS preload without the previous ESM syntax error.
+Notes:
+- The renderer now treats the preload bridge as a required desktop runtime dependency and no longer displays browser-use instructions.
+
+2026-06-30 22:39
+Scope: desktop
+Type: fix
+Summary: Add consistent right spacing between adjacent desktop action buttons.
+Files changed:
+- desktop/src/renderer/src/styles.css
+- desktop/docs/PR/2026-06-30_2235_fix-sandboxed-preload.md
+- desktop/docs/change.log
+Validation:
+- npm run typecheck: PASS — TypeScript passed.
+- npm run lint: PASS — ESLint reported no issues.
+- npm run test: PASS — 33 tests passed across 10 files.
+- npm run build: PASS — Electron Vite built all desktop bundles.
+Notes:
+- All desktop buttons now use a 12px right margin so adjacent actions no longer touch.

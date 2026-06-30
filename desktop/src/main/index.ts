@@ -12,7 +12,7 @@ function createWindow(): void {
     show: false,
     title: 'AeroNav Update Console',
     webPreferences: {
-      preload: join(__dirname, '../preload/index.mjs'),
+      preload: join(__dirname, '../preload/index.js'),
       sandbox: true,
       contextIsolation: true,
       nodeIntegration: false
