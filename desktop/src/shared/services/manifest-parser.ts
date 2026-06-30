@@ -64,6 +64,7 @@ export function parseManifest(text: string): PackageManifest {
   validateOptionalString(value, 'generatedAt', issues)
   validateOptionalBoolean(value, 'requiresSigning', issues)
   validateOptionalBoolean(value, 'signed', issues)
+  if (value.mediaType !== undefined && value.mediaType !== 'SD_CARD' && value.mediaType !== 'USB_DRIVE') issues.push({ code:'manifest.invalidField', severity:'blocking', message:'mediaType must be SD_CARD or USB_DRIVE.', path:'mediaType' })
   if (value.dataCategories !== undefined &&
       (!Array.isArray(value.dataCategories) || value.dataCategories.some((item) => typeof item !== 'string'))) {
     issues.push({
@@ -87,6 +88,7 @@ export function parseManifest(text: string): PackageManifest {
     effectiveFrom: value.effectiveFrom as string,
     effectiveTo: value.effectiveTo as string,
     files,
+    ...(value.mediaType === 'SD_CARD' || value.mediaType === 'USB_DRIVE' ? { mediaType: value.mediaType } : {}),
     ...(typeof value.generatedAt === 'string' ? { generatedAt: value.generatedAt } : {}),
     ...(typeof value.requiresSigning === 'boolean' ? { requiresSigning: value.requiresSigning } : {}),
     ...(typeof value.signed === 'boolean' ? { signed: value.signed } : {}),

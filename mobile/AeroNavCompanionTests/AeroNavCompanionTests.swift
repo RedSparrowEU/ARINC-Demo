@@ -2,6 +2,13 @@ import XCTest
 @testable import AeroNavCompanion
 
 final class AeroNavCompanionTests: XCTestCase {
+    private struct Loader: ManifestLoading { let data: Data; func loadManifest(from url: URL) async throws -> Data { data } }
+    private func manifestData(id:String="ANAV-2607-USA-FD1000", path:String="navdata/demo.txt", hash:String=String(repeating:"0",count:64)) -> Data {
+        try! JSONSerialization.data(withJSONObject:["packageId":id,"provider":"Demo","source":"Generated","cycle":"2607","region":"USA","targetDevice":"FlightDeck FD-1000","formatVersion":"1.0","effectiveFrom":"2026-06-30","effectiveTo":"2026-08-05","files":[["path":path,"category":"navigation","required":true,"sha256":hash]]])
+    }
+    func testManifestImportDecodesAndValidates() async throws { let result=try await ManifestImportService(loader:Loader(data:manifestData())).importManifest(from:URL(fileURLWithPath:"/tmp/manifest.json"),now:Date(timeIntervalSince1970:1_783_033_200)); XCTAssertEqual(result.status,.valid); XCTAssertNotNil(result.package) }
+    func testManifestImportRejectsMalformedAndUnsafeContent() async throws { let malformed=try await ManifestImportService(loader:Loader(data:Data("{".utf8))).importManifest(from:URL(fileURLWithPath:"/tmp/manifest.json"),now:Date()); XCTAssertNil(malformed.package); let unsafe=try await ManifestImportService(loader:Loader(data:manifestData(path:"../escape",hash:"bad"))).importManifest(from:URL(fileURLWithPath:"/tmp/manifest.json"),now:Date(timeIntervalSince1970:1_783_033_200)); XCTAssertEqual(unsafe.status,.failed); XCTAssertEqual(unsafe.issues.count,2) }
+    func testManifestImportRejectsNonJson() async { do { _=try await ManifestImportService(loader:Loader(data:manifestData())).importManifest(from:URL(fileURLWithPath:"/tmp/manifest.txt"),now:Date()); XCTFail() } catch { XCTAssertNotNil(error as? ManifestImportError) } }
     @MainActor
     func testListLoadsThreeRepresentativeStatuses() {
         let viewModel = PackageListViewModel()

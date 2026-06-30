@@ -6,6 +6,7 @@ export interface ManifestFile {
 }
 
 export interface PackageManifest {
+  mediaType?: 'SD_CARD' | 'USB_DRIVE'
   packageId: string
   provider: string
   source: string

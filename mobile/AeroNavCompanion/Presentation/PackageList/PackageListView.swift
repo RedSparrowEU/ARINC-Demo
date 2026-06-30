@@ -1,7 +1,9 @@
 import SwiftUI
+import UniformTypeIdentifiers
 
 struct PackageListView: View {
     @StateObject private var viewModel: PackageListViewModel
+    @State private var importing = false
 
     init(viewModel: PackageListViewModel) {
         _viewModel = StateObject(wrappedValue: viewModel)
@@ -17,6 +19,9 @@ struct PackageListView: View {
                 }
             }
             .navigationTitle("AeroNav Companion")
+            .toolbar { Button("Import manifest", systemImage:"square.and.arrow.down") { importing=true } }
+            .fileImporter(isPresented:$importing, allowedContentTypes:[.json]) { result in if case let .success(url)=result { Task { await viewModel.importManifest(from:url) } } }
+            .safeAreaInset(edge:.top) { importBanner }
             .overlay {
                 if viewModel.packages.isEmpty {
                     ContentUnavailableView("No sample packages", systemImage: "shippingbox")
@@ -32,6 +37,7 @@ struct PackageListView: View {
             }
         }
     }
+    @ViewBuilder private var importBanner: some View { switch viewModel.importState { case .idle: EmptyView(); case .loading: ProgressView("Importing manifest…").padding(); case .failure(let message): Text(message).foregroundStyle(.red).padding(); case .result(let result): VStack { Text("Import \(result.status?.rawValue ?? "failed")").font(.headline); ForEach(result.issues){Text($0.message).font(.caption)} }.padding().frame(maxWidth:.infinity).background(.thinMaterial) } }
 }
 
 private struct PackageRow: View {

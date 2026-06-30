@@ -702,6 +702,10 @@ Phase 1 is implemented for both applications:
 Desktop device compatibility/export and mobile document import/decoding begin in later phases. No
 diagnostics, persistence, route preview, or operational aviation behavior is implemented.
 
+Phase 2 is also implemented: desktop validates selectable fictional device profiles, while mobile
+imports and validates manifest JSON through the iOS document picker. Desktop export and mobile
+offline history remain later phases.
+
 ## Demo script for interviews
 
 Suggested demo flow:

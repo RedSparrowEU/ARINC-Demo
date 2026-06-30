@@ -6,6 +6,7 @@
   "region": "USA",
   "targetDevice": "FlightDeck FD-1000",
   "formatVersion": "1.0",
+  "mediaType": "SD_CARD",
   "generatedAt": "2019-12-20T10:30:00Z",
   "effectiveFrom": "2020-01-02",
   "effectiveTo": "2020-01-29",
