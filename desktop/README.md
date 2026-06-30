@@ -8,6 +8,7 @@ Device compatibility, archive import, export, diagnostics, and operation history
 Phase 2 adds selectable fictional device profiles and compatibility checks; archive import, export,
 diagnostics, and operation history remain unimplemented.
 Phase 3 exports validated declared files to a selected folder, verifies copied checksums, and writes `export-log.json`.
+Phase 4 adds portable diagnostics reports and bounded local import/export history.
 
 ## Requirements
 

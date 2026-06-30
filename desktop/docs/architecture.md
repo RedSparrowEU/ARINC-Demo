@@ -24,3 +24,4 @@ confines checksum work to regular files under the selected package root.
 Device profiles and compatibility rules are shared, pure modules. The renderer can revalidate a
 selected profile without filesystem IPC or rereading the package.
 Phase 3 keeps source paths behind opaque session IDs and performs staged export and verification in the main process.
+Phase 4 centralizes the v1 diagnostics schema and persists atomic bounded operation history in user data.

@@ -2,6 +2,7 @@ import { useState } from 'react'
 import type { FileTreeNode, ImportedPackage } from '@shared/domain/imported-package'
 import type { ValidationIssue } from '@shared/domain/validation-result'
 import { matchingDeviceProfile, validateDeviceCompatibility } from '@shared/services/device-compatibility-validator'
+import type{OperationHistoryRecord}from'@shared/domain/diagnostics-report'
 
 type ScreenState =
   | { kind: 'idle' }
@@ -11,6 +12,7 @@ type ScreenState =
 
 export function App(): React.JSX.Element {
   const [state, setState] = useState<ScreenState>({ kind: 'idle' })
+  const [history,setHistory]=useState<OperationHistoryRecord[]>([])
 
   async function selectPackage(): Promise<void> {
     setState({ kind: 'loading' })
@@ -39,12 +41,14 @@ export function App(): React.JSX.Element {
         <button onClick={() => void selectPackage()} disabled={state.kind === 'loading'}>
           {state.kind === 'loading' ? 'Validating…' : state.kind === 'completed' ? 'Choose another folder' : 'Select package folder'}
         </button>
+        <button onClick={()=>void window.aeronav.getOperationHistory().then(setHistory)}>Load history</button>
       </header>
 
       {state.kind === 'idle' && <EmptyState />}
       {state.kind === 'loading' && <section className="panel"><p>Reading untrusted package contents and calculating SHA-256 checksums…</p></section>}
       {state.kind === 'failed' && <FailureState message={state.message} issues={state.issues} />}
       {state.kind === 'completed' && <PackageReport importedPackage={state.package} />}
+      {history.length>0&&<section className="panel"><h2>Operation history</h2>{history.map(item=><p key={item.id}>{item.attemptedAt} · {item.type} · {item.status} · {item.summary}</p>)}</section>}
     </main>
   )
 }
@@ -100,6 +104,7 @@ function PackageReport({ importedPackage }: { importedPackage: ImportedPackage }
         {profile && <dl className="metadata"><div><dt>Media</dt><dd>{profile.mediaType}</dd></div><div><dt>Root folder</dt><dd>{profile.requiredRootFolder}</dd></div><div><dt>Regions</dt><dd>{profile.supportedRegions.join(', ')}</dd></div><div><dt>Required categories</dt><dd>{profile.requiredCategories.join(', ')}</dd></div><div><dt>Signing</dt><dd>{profile.requiresSignedPackages?'Required':'Not required'}</dd></div><div><dt>Maximum size</dt><dd>{profile.maxPackageSizeMb} MB</dd></div></dl>}
         {compatibility.issues.length ? <IssueList issues={compatibility.issues}/>:<p className="success-copy">Device compatibility passed.</p>}
         <button disabled={readiness==='failed'||!profile||!importedPackage.sessionId} onClick={()=>{if(profile&&importedPackage.sessionId)void window.aeronav.exportPackage({profileId:profile.id,sessionId:importedPackage.sessionId}).then(result=>setExportMessage(result.kind==='success'?`Exported to ${result.destination}`:result.kind==='failed'?result.message:'Export cancelled'))}}>Export to folder</button>
+        <button disabled={!importedPackage.sessionId} onClick={()=>{if(importedPackage.sessionId)void window.aeronav.saveDiagnostics(importedPackage.sessionId).then(saved=>setExportMessage(saved?'Diagnostics saved':'Diagnostics save cancelled'))}}>Save diagnostics</button>
         {exportMessage&&<p>{exportMessage}</p>}
       </section>
 
