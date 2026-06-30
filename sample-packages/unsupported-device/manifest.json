@@ -6,8 +6,10 @@
   "region": "USA",
   "targetDevice": "Unsupported Demo Device",
   "formatVersion": "1.0",
-  "effectiveFrom": "2026-07-09",
+  "generatedAt": "2026-06-30T10:30:00Z",
+  "effectiveFrom": "2026-06-30",
   "effectiveTo": "2026-08-05",
+  "dataCategories": ["navigation"],
   "files": [{
     "path": "navdata/demo.txt",
     "category": "navigation",

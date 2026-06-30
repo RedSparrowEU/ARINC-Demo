@@ -1,8 +1,10 @@
 # AeroNav Update Console
 
-Electron/macOS shell for the non-operational AeroNav package workflow demo. The initial scaffold
-provides process boundaries and development tooling; package import, validation, export, and
-diagnostics are not yet implemented.
+Electron/macOS application for the non-operational AeroNav package workflow demo. Phase 1 supports
+safe folder selection, manifest parsing, package metadata and file-tree display, SHA-256 verification,
+and deterministic validation reporting.
+
+Device compatibility, archive import, export, diagnostics, and operation history are not implemented.
 
 ## Requirements
 

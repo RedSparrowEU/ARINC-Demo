@@ -1,22 +1,123 @@
-import { productInfo } from '@shared/domain/product-info'
+import { useState } from 'react'
+import type { FileTreeNode, ImportedPackage } from '@shared/domain/imported-package'
+import type { ValidationIssue } from '@shared/domain/validation-result'
+
+type ScreenState =
+  | { kind: 'idle' }
+  | { kind: 'loading' }
+  | { kind: 'failed'; message: string; issues: ValidationIssue[] }
+  | { kind: 'completed'; package: ImportedPackage }
 
 export function App(): React.JSX.Element {
+  const [state, setState] = useState<ScreenState>({ kind: 'idle' })
+
+  async function selectPackage(): Promise<void> {
+    setState({ kind: 'loading' })
+    try {
+      const result = await window.aeronav.selectAndImportPackage()
+      if (result.kind === 'cancelled') setState({ kind: 'idle' })
+      else if (result.kind === 'failed') setState(result)
+      else setState({ kind: 'completed', package: result.package })
+    } catch (error) {
+      setState({
+        kind: 'failed',
+        message: error instanceof Error ? error.message : 'Package import failed.',
+        issues: []
+      })
+    }
+  }
+
   return (
     <main>
-      <p className="eyebrow">NON-OPERATIONAL DEMO</p>
-      <h1>{productInfo.name}</h1>
-      <p className="summary">
-        A buildable foundation for package import, deterministic validation, removable-media export
-        simulation, and diagnostics.
-      </p>
-      <section aria-labelledby="status-heading">
-        <h2 id="status-heading">Initialization status</h2>
-        <dl>
-          <div><dt>Desktop runtime</dt><dd>Electron on {window.aeronav.platform}</dd></div>
-          <div><dt>Package workflow</dt><dd>Not implemented</dd></div>
-          <div><dt>Operational suitability</dt><dd>None — demonstration only</dd></div>
-        </dl>
-      </section>
+      <header className="masthead">
+        <div>
+          <p className="eyebrow">NON-OPERATIONAL DEMO</p>
+          <h1>AeroNav Update Console</h1>
+          <p className="summary">Import a demo package folder, verify its manifest and checksums, and review deterministic validation results.</p>
+        </div>
+        <button onClick={() => void selectPackage()} disabled={state.kind === 'loading'}>
+          {state.kind === 'loading' ? 'Validating…' : state.kind === 'completed' ? 'Choose another folder' : 'Select package folder'}
+        </button>
+      </header>
+
+      {state.kind === 'idle' && <EmptyState />}
+      {state.kind === 'loading' && <section className="panel"><p>Reading untrusted package contents and calculating SHA-256 checksums…</p></section>}
+      {state.kind === 'failed' && <FailureState message={state.message} issues={state.issues} />}
+      {state.kind === 'completed' && <PackageReport importedPackage={state.package} />}
     </main>
   )
+}
+
+function EmptyState(): React.JSX.Element {
+  return (
+    <section className="panel empty-state">
+      <h2>No package selected</h2>
+      <p>Select a folder containing <code>manifest.json</code>. Archive import and device compatibility are outside Phase 1.</p>
+    </section>
+  )
+}
+
+function FailureState({ message, issues }: { message: string; issues: ValidationIssue[] }): React.JSX.Element {
+  return (
+    <section className="panel failure" role="alert">
+      <p className="status failed">Import failed</p>
+      <h2>{message}</h2>
+      {issues.length > 0 && <IssueList issues={issues} />}
+    </section>
+  )
+}
+
+function PackageReport({ importedPackage }: { importedPackage: ImportedPackage }): React.JSX.Element {
+  const { manifest, validation, tree } = importedPackage
+  return (
+    <div className="report-grid">
+      <section className="panel summary-panel">
+        <div className="section-heading">
+          <div><p className="kicker">{importedPackage.rootName}</p><h2>{manifest.packageId}</h2></div>
+          <span className={`status ${validation.status}`}>{validation.status}</span>
+        </div>
+        <dl className="metadata">
+          <div><dt>Provider</dt><dd>{manifest.provider}</dd></div>
+          <div><dt>Source</dt><dd>{manifest.source}</dd></div>
+          <div><dt>Cycle</dt><dd>{manifest.cycle}</dd></div>
+          <div><dt>Region</dt><dd>{manifest.region}</dd></div>
+          <div><dt>Target device</dt><dd>{manifest.targetDevice}</dd></div>
+          <div><dt>Effective</dt><dd>{manifest.effectiveFrom} — {manifest.effectiveTo}</dd></div>
+        </dl>
+      </section>
+
+      <section className="panel">
+        <div className="section-heading"><h2>Validation report</h2><span>{validation.issues.length} issues</span></div>
+        {validation.issues.length === 0 ? <p className="success-copy">All Phase 1 checks passed.</p> : <IssueList issues={validation.issues} />}
+      </section>
+
+      <section className="panel">
+        <div className="section-heading"><h2>Declared files</h2><span>{validation.files.length}</span></div>
+        <div className="file-results">
+          {validation.files.map((file) => (
+            <article key={file.path}>
+              <div><strong>{file.path}</strong><small>{file.category} · {file.required ? 'required' : 'optional'}</small></div>
+              <span className={`checksum ${file.checksumMatches ? 'match' : file.exists ? 'mismatch' : 'missing'}`}>
+                {file.checksumMatches ? 'checksum verified' : file.exists ? 'checksum failed' : 'missing'}
+              </span>
+              {file.calculatedSha256 && <code title={file.calculatedSha256}>{file.calculatedSha256}</code>}
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="panel">
+        <div className="section-heading"><h2>Package file tree</h2><span>read-only</span></div>
+        <FileTree nodes={tree} />
+      </section>
+    </div>
+  )
+}
+
+function IssueList({ issues }: { issues: ValidationIssue[] }): React.JSX.Element {
+  return <ul className="issues">{issues.map((issue, index) => <li key={`${issue.code}-${issue.path ?? index}`}><span className={`severity ${issue.severity}`}>{issue.severity}</span><div>{issue.message}{issue.path && <code>{issue.path}</code>}</div></li>)}</ul>
+}
+
+function FileTree({ nodes }: { nodes: FileTreeNode[] }): React.JSX.Element {
+  return <ul className="file-tree">{nodes.map((node) => <li key={node.relativePath}><span>{node.type === 'directory' ? '▾' : node.type === 'symlink' ? '↗' : '•'} {node.name}</span>{node.children && <FileTree nodes={node.children} />}</li>)}</ul>
 }

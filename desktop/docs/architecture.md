@@ -13,5 +13,10 @@ React renderer → typed preload API → Electron main process → file-system s
 - `src/shared/domain/` and `src/shared/services/` contain framework-independent rules.
 
 The BrowserWindow enables context isolation and sandboxing and disables renderer Node integration.
-Imported package files will be treated as untrusted and never executed. The scaffold intentionally
-does not define the production manifest schema or validation API.
+The preload exposes one Phase 1 operation: `selectAndImportPackage()`. It returns cancellation, a
+structured import failure, or an imported package containing manifest metadata, a read-only file
+tree, calculated checksums, and validation issues. Full source paths are not exposed to the renderer.
+
+Imported package files are treated as untrusted and never executed. The main process rejects unsafe
+declared paths and declared symlinks, does not follow symlinks while constructing the tree, and
+confines checksum work to regular files under the selected package root.

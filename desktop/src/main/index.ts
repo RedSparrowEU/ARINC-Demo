@@ -1,6 +1,7 @@
 import { join } from 'node:path'
 import { app, BrowserWindow, shell } from 'electron'
 import { electronApp, is } from '@electron-toolkit/utils'
+import { registerPackageIpc } from './ipc/package-ipc'
 
 function createWindow(): void {
   const mainWindow = new BrowserWindow({
@@ -11,7 +12,7 @@ function createWindow(): void {
     show: false,
     title: 'AeroNav Update Console',
     webPreferences: {
-      preload: join(__dirname, '../preload/index.js'),
+      preload: join(__dirname, '../preload/index.mjs'),
       sandbox: true,
       contextIsolation: true,
       nodeIntegration: false
@@ -33,6 +34,7 @@ function createWindow(): void {
 
 void app.whenReady().then(() => {
   electronApp.setAppUserModelId('com.aeronav.update-console')
+  registerPackageIpc()
   createWindow()
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow()
