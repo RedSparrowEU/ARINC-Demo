@@ -77,3 +77,21 @@ Validation:
 - xcodebuild test: PASS — simulator tests passed.
 Notes:
 - Camera scanning is optional and hidden when VisionKit reports it unavailable.
+
+2026-06-30 22:48
+Scope: mobile
+Type: fix
+Summary: Add explicit close controls to the Companion Bridge, Diagnostics, and Validation History sheets.
+Files changed:
+- mobile/AeroNavCompanion/Presentation/Bridge/CompanionBridgeView.swift
+- mobile/AeroNavCompanion/Presentation/Diagnostics/DiagnosticsView.swift
+- mobile/AeroNavCompanion/Presentation/History/HistoryView.swift
+- mobile/docs/PR/2026-06-30_2248_mobile-sheet-close-controls.md
+- mobile/docs/change.log
+Validation:
+- xcodebuild -list -project AeroNavCompanion.xcodeproj: PASS — app, test target, and shared scheme discovered.
+- xcodebuild test -project AeroNavCompanion.xcodeproj -scheme AeroNavCompanion -destination 'platform=iOS Simulator,name=iPhone 17 Pro,OS=26.0.1': PASS — all 10 tests passed.
+- xcodebuild build -project AeroNavCompanion.xcodeproj -scheme AeroNavCompanion -destination 'platform=iOS Simulator,name=iPhone 17 Pro,OS=26.0.1': PASS — Debug simulator build succeeded.
+- xcrun simctl install/launch and simulator UI smoke check: PASS — all three close controls rendered and dismissed only their containing sheets.
+Notes:
+- Each close button dismisses only its containing sheet; nested scanner and importer behavior is unchanged.
