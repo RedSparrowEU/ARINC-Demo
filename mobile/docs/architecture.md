@@ -24,3 +24,4 @@ Phase 2 adds a security-scoped loader and asynchronous import service. The view 
 import state and in-memory upsert behavior; no persistence is introduced.
 Phase 3 injects an actor-backed atomic JSON history store into import and history view models.
 Phase 4 decodes the desktop v1 diagnostics schema and keeps the selected report transient.
+Phase 5 isolates the optional compact bridge and uses VisionKit only when scanning is supported and available.
