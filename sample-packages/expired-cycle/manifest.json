@@ -1,0 +1,17 @@
+{
+  "packageId": "ANAV-2001-USA-FD1000-EXPIRED",
+  "provider": "AeroNav Data Services Demo",
+  "source": "Generated test fixture data",
+  "cycle": "2001",
+  "region": "USA",
+  "targetDevice": "FlightDeck FD-1000",
+  "formatVersion": "1.0",
+  "effectiveFrom": "2020-01-02",
+  "effectiveTo": "2020-01-29",
+  "files": [{
+    "path": "navdata/demo.txt",
+    "category": "navigation",
+    "required": true,
+    "sha256": "7355fd59f85a76f5df40d8ffe83ca4c6f1386b3922a0e1b4fd28f5084e4cf7a6"
+  }]
+}

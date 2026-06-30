@@ -1,0 +1,19 @@
+{
+  "packageId": "ANAV-2607-USA-FD1000",
+  "provider": "AeroNav Data Services Demo",
+  "source": "Generated test fixture data",
+  "cycle": "2607",
+  "region": "USA",
+  "targetDevice": "FlightDeck FD-1000",
+  "formatVersion": "1.0",
+  "effectiveFrom": "2026-07-09",
+  "effectiveTo": "2026-08-05",
+  "requiresSigning": false,
+  "signed": false,
+  "files": [{
+    "path": "navdata/demo.txt",
+    "category": "navigation",
+    "required": true,
+    "sha256": "7355fd59f85a76f5df40d8ffe83ca4c6f1386b3922a0e1b4fd28f5084e4cf7a6"
+  }]
+}

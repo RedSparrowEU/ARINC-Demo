@@ -669,6 +669,28 @@ xcodebuild test -scheme AeroNavCompanion -destination 'platform=iOS Simulator,na
 
 Simulator names may vary by local Xcode installation. When a simulator is unavailable, report the exact environment blocker and run available non-simulator tests or static checks.
 
+## Getting started
+
+The initialized desktop shell uses Electron Vite, React, TypeScript, npm, ESLint, and Vitest:
+
+```bash
+cd desktop
+npm install
+npm run dev
+```
+
+The initialized mobile shell is a native SwiftUI project targeting iOS 18 or later:
+
+```bash
+cd mobile
+open AeroNavCompanion.xcodeproj
+```
+
+Project-specific setup, architecture, and validation details are documented in
+[`desktop/README.md`](desktop/README.md) and [`mobile/README.md`](mobile/README.md). Both shells are
+foundations only: package import, production manifest decoding, validation, export, and diagnostics
+remain roadmap work.
+
 ## Demo script for interviews
 
 Suggested demo flow:
