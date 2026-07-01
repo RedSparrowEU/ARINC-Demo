@@ -1,3 +1,62 @@
 import SwiftUI
-@MainActor final class HistoryViewModel:ObservableObject { enum State{case loading,empty,loaded([ValidationHistoryRecord]),failure(String)};@Published var state:State = .loading;let store:any ValidationHistoryStoring;init(store:any ValidationHistoryStoring){self.store=store};func load()async{state = .loading;do{let records=try await store.load();state=records.isEmpty ? .empty:.loaded(records)}catch{state = .failure(error.localizedDescription)}} }
-struct HistoryView:View{@Environment(\.dismiss) private var dismiss;@StateObject var viewModel:HistoryViewModel;var body:some View{NavigationStack{Group{switch viewModel.state{case .loading:ProgressView();case .empty:ContentUnavailableView("No validation history",systemImage:"clock");case .failure(let message):ContentUnavailableView("History unavailable",systemImage:"exclamationmark.triangle",description:Text(message));case .loaded(let records):List(records){record in VStack(alignment:.leading){Text(record.packageId ?? record.fileName).font(.headline);Text("\(record.status) · \(record.attemptedAt.formatted())");ForEach(record.issues,id:\.self){Text($0).font(.caption)}}}}}.navigationTitle("Validation History").toolbar{ToolbarItem(placement:.topBarTrailing){Button("Close",systemImage:"xmark"){dismiss()}.buttonStyle(.bordered).buttonBorderShape(.circle)}}.task{await viewModel.load()}}}}
+
+@MainActor final class HistoryViewModel: ObservableObject {
+    enum State {
+        case loading, empty
+        case loaded([ValidationHistoryRecord])
+        case failure(String)
+    }
+    @Published var state: State = .loading
+    let store: any ValidationHistoryStoring
+    init(store: any ValidationHistoryStoring) { self.store = store }
+    func load() async {
+        state = .loading
+        do {
+            let records = try await store.load()
+            state = records.isEmpty ? .empty : .loaded(records)
+        } catch { state = .failure(error.localizedDescription) }
+    }
+}
+struct HistoryView: View {
+    @Environment(\.dismiss) private var dismiss
+    @StateObject var viewModel: HistoryViewModel
+    var body: some View {
+        NavigationStack {
+            Group {
+                switch viewModel.state {
+                case .loading: ProgressView()
+                case .empty:
+                    ContentUnavailableView(
+                        "No validation history",
+                        systemImage: "clock"
+                    )
+                case .failure(let message):
+                    ContentUnavailableView(
+                        "History unavailable",
+                        systemImage: "exclamationmark.triangle",
+                        description: Text(message)
+                    )
+                case .loaded(let records):
+                    List(records) { record in
+                        VStack(alignment: .leading) {
+                            Text(record.packageId ?? record.fileName).font(
+                                .headline
+                            )
+                            Text(
+                                "\(record.status) · \(record.attemptedAt.formatted())"
+                            )
+                            ForEach(record.issues, id: \.self) {
+                                Text($0).font(.caption)
+                            }
+                        }
+                    }
+                }
+            }.navigationTitle("Validation History").toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button("Close", systemImage: "xmark") { dismiss() }
+                        .buttonStyle(.bordered).buttonBorderShape(.circle)
+                }
+            }.task { await viewModel.load() }
+        }
+    }
+}

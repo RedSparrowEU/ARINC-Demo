@@ -7,9 +7,21 @@ enum SamplePackages {
         region: "USA",
         status: .valid,
         files: [
-            .init(path: "navdata/FAACIFP18", category: "navigation", required: true),
-            .init(path: "navdata/airports-index.json", category: "navigation", required: true),
-            .init(path: "charts/KJFK_ILS_04L.pdf", category: "charts", required: false)
+            .init(
+                path: "navdata/FAACIFP18",
+                category: "navigation",
+                required: true
+            ),
+            .init(
+                path: "navdata/airports-index.json",
+                category: "navigation",
+                required: true
+            ),
+            .init(
+                path: "charts/KJFK_ILS_04L.pdf",
+                category: "charts",
+                required: false
+            ),
         ]
     )
 
@@ -19,8 +31,16 @@ enum SamplePackages {
         region: "EUR",
         status: .warning,
         files: [
-            .init(path: "navdata/demo.txt", category: "navigation", required: true),
-            .init(path: "terrain/terrain-index.json", category: "terrain", required: false)
+            .init(
+                path: "navdata/demo.txt",
+                category: "navigation",
+                required: true
+            ),
+            .init(
+                path: "terrain/terrain-index.json",
+                category: "terrain",
+                required: false
+            ),
         ]
     )
 
@@ -29,7 +49,13 @@ enum SamplePackages {
         cycle: "2607",
         region: "USA",
         status: .failed,
-        files: [.init(path: "navdata/required-but-absent.txt", category: "navigation", required: true)]
+        files: [
+            .init(
+                path: "navdata/required-but-absent.txt",
+                category: "navigation",
+                required: true
+            )
+        ]
     )
 
     static let all = [valid, warning, failed]
@@ -58,6 +84,8 @@ enum SamplePackages {
     private static func utcDate(year: Int, month: Int, day: Int) -> Date {
         var calendar = Calendar(identifier: .gregorian)
         calendar.timeZone = TimeZone(secondsFromGMT: 0)!
-        return calendar.date(from: DateComponents(year: year, month: month, day: day))!
+        return calendar.date(
+            from: DateComponents(year: year, month: month, day: day)
+        )!
     }
 }
