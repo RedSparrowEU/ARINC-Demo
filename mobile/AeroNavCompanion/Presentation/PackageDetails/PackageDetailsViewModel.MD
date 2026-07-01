@@ -3,41 +3,26 @@
 Source: `Presentation/PackageDetails/PackageDetailsViewModel.swift`
 
 ## Purpose
-This file prepares package-detail data for the detail screen by grouping files by category and formatting the effective date range.
+Prepares grouped and formatted package data for the detail screen.
 
 ## Architecture Role
-Presentation layer view model. It keeps sorting and formatting logic out of the SwiftUI view body.
+Presentation view-model layer. It keeps sorting and formatting out of the SwiftUI body.
 
 ## App Flow Context
-The list screen creates this view model for the selected package, then the details screen reads its precomputed groups and formatted date text.
+The package list constructs this model for the selected package; the detail view then reads precomputed groups and a formatted effective-period string.
 
-## Line-by-Line Explanation
-- Line 1: `import Foundation` Imports Foundation, which provides core Swift types such as `Date`, `URL`, `UUID`, `JSONDecoder`, and file-system utilities used by this app.
-- Line 2: `<blank>` Blank line used only for visual separation between related pieces of code.
-- Line 3: `@MainActor` Pins the following type to the main actor. In practice, that means its UI-facing state is expected to be accessed on the main thread.
-- Line 4: `final class PackageDetailsViewModel: ObservableObject {` Declares the reference type `PackageDetailsViewModel`. Swift classes are used when one shared object instance should be observed or passed around.
-- Line 5: `let package: NavigationPackage` Declares an immutable stored value with `let`. Once a value is assigned for this instance, the property itself does not change.
-- Line 6: `let categoryGroups: [PackageCategoryGroup]` Declares an immutable stored value with `let`. Once a value is assigned for this instance, the property itself does not change.
-- Line 7: `<blank>` Blank line used only for visual separation between related pieces of code.
-- Line 8: `init(package: NavigationPackage) {` Starts an initializer. `init` is Swift’s constructor and is responsible for preparing a new instance with valid stored properties.
-- Line 9: `self.package = package` The source on this line is `self.package = package`. It contributes to the surrounding declaration or expression exactly where it appears.
-- Line 10: `categoryGroups = Dictionary(grouping: package.files, by: \PackageFileDisplay.category)` This line continues the surrounding Swift statement with additional arguments, data, or formatting.
-- Line 11: `.map { PackageCategoryGroup(category: $0.key, files: $0.value.sorted { $0.path < $1.path }) }` Continues the previous expression with another SwiftUI modifier or method call. Chaining like this is a very common Swift style.
-- Line 12: `.sorted { $0.category < $1.category }` Continues the previous expression with another SwiftUI modifier or method call. Chaining like this is a very common Swift style.
-- Line 13: `}` Closes part of the surrounding scope, closure, or argument list that started on earlier lines.
-- Line 14: `<blank>` Blank line used only for visual separation between related pieces of code.
-- Line 15: `var effectivePeriod: String {` Starts a computed property. Swift runs the enclosed code each time the property is read instead of storing a separate value.
-- Line 16: `"\(Self.dateFormatter.string(from: package.effectiveFrom)) – \(Self.dateFormatter.string(from: package.effectiveTo))"` This line continues the surrounding Swift statement with additional arguments, data, or formatting.
-- Line 17: `}` Closes part of the surrounding scope, closure, or argument list that started on earlier lines.
-- Line 18: `<blank>` Blank line used only for visual separation between related pieces of code.
-- Line 19: `private static let dateFormatter: DateFormatter = {` The source on this line is `private static let dateFormatter: DateFormatter = {`. It contributes to the surrounding declaration or expression exactly where it appears.
-- Line 20: `let formatter = DateFormatter()` Declares an immutable stored value with `let`. Once a value is assigned for this instance, the property itself does not change.
-- Line 21: `formatter.locale = Locale(identifier: "en_US_POSIX")` The source on this line is `formatter.locale = Locale(identifier: "en_US_POSIX")`. It contributes to the surrounding declaration or expression exactly where it appears.
-- Line 22: `formatter.timeZone = TimeZone(secondsFromGMT: 0)` The source on this line is `formatter.timeZone = TimeZone(secondsFromGMT: 0)`. It contributes to the surrounding declaration or expression exactly where it appears.
-- Line 23: `formatter.dateFormat = "yyyy-MM-dd"` The source on this line is `formatter.dateFormat = "yyyy-MM-dd"`. It contributes to the surrounding declaration or expression exactly where it appears.
-- Line 24: `return formatter` Returns a value from the current function or computed property.
-- Line 25: `}()` Closes part of the surrounding scope, closure, or argument list that started on earlier lines.
-- Line 26: `}` Closes part of the surrounding scope, closure, or argument list that started on earlier lines.
+## Swift Concepts To Notice
+- `@MainActor` on a class: This is a concurrency guarantee: even though the type is simple, its public interface is meant to be used from UI code on the main actor.
+- Key paths like `\PackageFileDisplay.category`: Swift key paths are typed references to properties and are commonly used by collection helpers such as `Dictionary(grouping:by:)`.
+- `Self` in static context: Inside an instance property, `Self.dateFormatter` explicitly refers to the type-level formatter rather than an instance member.
+- Closure-initialized `static let`: A common Swift pattern for expensive reusable helpers such as formatters: create them once, configure them in a closure, and cache the result.
+
+## Semantic Walkthrough
+- Line 1: Imports Foundation for `DateFormatter`, `Locale`, and `TimeZone`.
+- Lines 3-6: Declare the main-actor `ObservableObject` class and store the selected package plus its already-transformed category groups.
+- Lines 8-13: In the initializer, group files by category with `Dictionary(grouping:by:)`, using a key path instead of an explicit closure for the grouping key. The later `map` and `sorted` closures convert dictionary entries into a predictable section order for the UI.
+- Lines 15-17: Expose `effectivePeriod` as a computed property. `Self.dateFormatter` is a Swift way to say “use the type-level formatter defined below,” and the interpolation expression builds the exact string the detail view displays.
+- Lines 19-25: Create a private static formatter in a closure. This is an idiomatic Swift alternative to a global singleton: the formatter is lazily initialized once, configured with a stable POSIX locale and UTC timezone, and then reused for every instance.
 
 ## Why This File Matters
-This file prepares package-detail data for the detail screen by grouping files by category and formatting the effective date range.
+Prepares grouped and formatted package data for the detail screen.

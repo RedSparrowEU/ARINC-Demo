@@ -1,23 +1,23 @@
-# Document mobile Swift sources for beginners
-Date: 2026-07-01 20:26
+# Rewrite mobile Swift companion docs around language concepts
+Date: 2026-07-01 21:49
 Scope: mobile
-Branch: docs/mobile-swift-source-companions
+Branch: chore/mobile-swift-source-companions
 ## Goal
-Create beginner-oriented Markdown companions for every Swift source file in `mobile/AeroNavCompanion` and add a source-folder overview that links them.
+Replace the low-value punctuation-level Markdown explanations with Swift-language explanations aimed at programmers who are new to Swift but not new to programming.
 ## Context
-The mobile app source is compact enough to document file-by-file, and the requested output should teach Swift syntax in the context of the app’s manifest, history, diagnostics, and bridge workflows.
+The first pass documented too much structural noise and too little Swift-specific meaning. The rewrite should explain constructs such as `some`, `any`, property wrappers, actors, result builders, and bindings in the context of AeroNav Companion behavior.
 ## Plan
-1. Generate one `.MD` companion beside each `mobile/AeroNavCompanion` Swift source file with line-by-line explanations.
-2. Add `mobile/AeroNavCompanion/OVERVIEW.MD` as the entry document with subsystem grouping and reading order.
-3. Update the mobile changelog and verify coverage plus overview links.
+1. Rewrite every generated `mobile/AeroNavCompanion` companion doc using semantic line ranges instead of one bullet per source line.
+2. Revise `mobile/AeroNavCompanion/OVERVIEW.MD` so it explains the concept-oriented reading strategy and preserves links to all companion docs.
+3. Append a new mobile changelog entry, verify content regressions are gone, and update PR `#13` to describe the rewrite quality bar.
 ## Acceptance criteria
-- Every `mobile/AeroNavCompanion` `.swift` source has a matching `.MD` companion in the same folder.
-- `mobile/AeroNavCompanion/OVERVIEW.MD` links to all generated companion docs and explains the app flow.
-- The new docs explain every source line for a Swift beginner and stay tied to AeroNav Companion behavior.
+- No companion doc contains filler phrases about blank lines, closing braces, or generic `source on this line` commentary.
+- Files that use `some`, `any`, property wrappers, actors, bindings, or result builders explicitly explain those Swift features.
+- Every Swift source file still has a matching `.MD` file in the same folder, and `OVERVIEW.MD` links to all of them.
 ## Validation commands
-- `python3 /tmp/verify_mobile_swift_docs.py`
+- `python3 /tmp/verify_mobile_swift_docs_rewrite.py`
 - `git status --short --branch`
 ## Risks
-- The documentation volume is large, so consistency depends on using one stable explanation format across all files.
+- Several source files are intentionally compressed onto one line, so each explanation must unpack multiple Swift constructs without becoming vague.
 ## Rollback plan
-Remove the generated `.MD` companions, the overview document, and the related mobile docs entries.
+Revert the rewrite commit on `chore/mobile-swift-source-companions` to restore the prior generated docs and PR metadata.
