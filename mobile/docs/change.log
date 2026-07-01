@@ -136,3 +136,33 @@ Validation:
 Notes:
 - Simulator and unsupported-device users see a disabled QR action with an availability explanation.
 - Camera scanning stops after the first recognized QR value and reuses the manual decoder.
+2026-07-01 20:26
+Scope: mobile
+Type: docs
+Summary: Add beginner-oriented Markdown companions for every mobile Swift source file and a source overview index.
+Files changed:
+- mobile/AeroNavCompanion/
+- mobile/AeroNavCompanion/OVERVIEW.MD
+- mobile/docs/PR/2026-07-01_2026_mobile-swift-source-companions.md
+- mobile/docs/change.log
+Validation:
+- python3 /tmp/verify_mobile_swift_docs.py: PASS — verified one `.MD` companion per Swift source and confirmed overview links.
+- git status --short --branch: PASS — recorded the documentation-only workspace changes.
+Notes:
+- Each generated `.MD` file explains every source line for a Swift beginner in the context of AeroNav Companion app behavior.
+
+
+2026-07-01 21:49
+Scope: mobile
+Type: docs
+Summary: Rewrite the mobile Swift companion docs to explain Swift language features instead of structural punctuation.
+Files changed:
+- mobile/AeroNavCompanion/
+- mobile/AeroNavCompanion/OVERVIEW.MD
+- mobile/docs/PR/2026-07-01_2026_mobile-swift-source-companions.md
+- mobile/docs/change.log
+Validation:
+- python3 /tmp/verify_mobile_swift_docs_rewrite.py: PASS — verified coverage, overview links, and removal of filler phrases while checking for Swift feature explanations.
+- git status --short --branch: PASS — confirmed the docs-only branch state after the rewrite.
+Notes:
+- The rewritten docs assume programming fluency and focus on Swift concepts such as opaque return types, existentials, property wrappers, actors, bindings, and result builders.
