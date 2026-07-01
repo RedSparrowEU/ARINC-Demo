@@ -1,0 +1,186 @@
+# ManifestImportService.swift
+
+Source: `Services/ManifestImportService.swift`
+
+## Purpose
+This file defines the manifest import result types, the manifest DTO used for decoding, and the service that validates imported manifests.
+
+## Architecture Role
+Services layer. It is the main validation engine of the mobile app and turns raw JSON into a `NavigationPackage` plus issues and status.
+
+## App Flow Context
+`PackageListViewModel` hands a picked file URL to this service, which reads the JSON, validates package identity, dates, and file declarations, and returns a mobile-friendly outcome.
+
+## Line-by-Line Explanation
+- Line 1: `import Foundation` Imports Foundation, which provides core Swift types such as `Date`, `URL`, `UUID`, `JSONDecoder`, and file-system utilities used by this app.
+- Line 2: `<blank>` Blank line used only for visual separation between related pieces of code.
+- Line 3: `struct MobileValidationIssue: Identifiable, Equatable, Sendable {` Declares the Swift `struct` named `MobileValidationIssue`. Structs are value types, which makes them a common fit for data models and SwiftUI views.
+- Line 4: `let id: String` Declares an immutable stored value with `let`. Once a value is assigned for this instance, the property itself does not change.
+- Line 5: `let message: String` Declares an immutable stored value with `let`. Once a value is assigned for this instance, the property itself does not change.
+- Line 6: `}` Closes part of the surrounding scope, closure, or argument list that started on earlier lines.
+- Line 7: `struct ManifestImportOutcome: Equatable, Sendable {` Declares the Swift `struct` named `ManifestImportOutcome`. Structs are value types, which makes them a common fit for data models and SwiftUI views.
+- Line 8: `let package: NavigationPackage?` Declares an immutable stored value with `let`. Once a value is assigned for this instance, the property itself does not change.
+- Line 9: `let issues: [MobileValidationIssue]` Declares an immutable stored value with `let`. Once a value is assigned for this instance, the property itself does not change.
+- Line 10: `let status: PackageStatus?` Declares an immutable stored value with `let`. Once a value is assigned for this instance, the property itself does not change.
+- Line 11: `}` Closes part of the surrounding scope, closure, or argument list that started on earlier lines.
+- Line 12: `enum ManifestImportError: LocalizedError {` Declares the enum `ManifestImportError`. Enums model a fixed set of cases, which is useful for statuses and UI states.
+- Line 13: `case invalidType, tooLarge, unreadable` Declares one enum case, meaning one allowed named value inside the surrounding enum.
+- Line 14: `var errorDescription: String? {` Starts a computed property. Swift runs the enclosed code each time the property is read instead of storing a separate value.
+- Line 15: `switch self {` Starts a `switch`, which matches one value against several cases in a structured and readable way.
+- Line 16: `case .invalidType: "Select a JSON file."` Declares one enum case, meaning one allowed named value inside the surrounding enum.
+- Line 17: `case .tooLarge: "Manifest exceeds 1 MB."` Declares one enum case, meaning one allowed named value inside the surrounding enum.
+- Line 18: `case .unreadable: "Manifest could not be read."` Declares one enum case, meaning one allowed named value inside the surrounding enum.
+- Line 19: `}` Closes part of the surrounding scope, closure, or argument list that started on earlier lines.
+- Line 20: `}` Closes part of the surrounding scope, closure, or argument list that started on earlier lines.
+- Line 21: `}` Closes part of the surrounding scope, closure, or argument list that started on earlier lines.
+- Line 22: `<blank>` Blank line used only for visual separation between related pieces of code.
+- Line 23: `struct ManifestDTO: Decodable {` Declares the Swift `struct` named `ManifestDTO`. Structs are value types, which makes them a common fit for data models and SwiftUI views.
+- Line 24: `let packageId, provider, source, cycle, region, targetDevice, formatVersion,` Declares an immutable stored value with `let`. Once a value is assigned for this instance, the property itself does not change.
+- Line 25: `effectiveFrom, effectiveTo: String` The source on this line is `effectiveFrom, effectiveTo: String`. It contributes to the surrounding declaration or expression exactly where it appears.
+- Line 26: `let mediaType: String?` Declares an immutable stored value with `let`. Once a value is assigned for this instance, the property itself does not change.
+- Line 27: `let files: [FileDTO]` Declares an immutable stored value with `let`. Once a value is assigned for this instance, the property itself does not change.
+- Line 28: `struct FileDTO: Decodable {` Declares the Swift `struct` named `FileDTO`. Structs are value types, which makes them a common fit for data models and SwiftUI views.
+- Line 29: `let path, category, sha256: String` Declares an immutable stored value with `let`. Once a value is assigned for this instance, the property itself does not change.
+- Line 30: `let required: Bool` Declares an immutable stored value with `let`. Once a value is assigned for this instance, the property itself does not change.
+- Line 31: `}` Closes part of the surrounding scope, closure, or argument list that started on earlier lines.
+- Line 32: `}` Closes part of the surrounding scope, closure, or argument list that started on earlier lines.
+- Line 33: `<blank>` Blank line used only for visual separation between related pieces of code.
+- Line 34: `protocol ManifestImporting: Sendable {` Declares the protocol `ManifestImporting`. In Swift, a protocol is an interface that describes required behavior without choosing the concrete implementation.
+- Line 35: `func importManifest(from url: URL, now: Date) async throws` Starts the function `importManifest`. Functions group behavior into a reusable named operation.
+- Line 36: `-> ManifestImportOutcome` The source on this line is `-> ManifestImportOutcome`. It contributes to the surrounding declaration or expression exactly where it appears.
+- Line 37: `}` Closes part of the surrounding scope, closure, or argument list that started on earlier lines.
+- Line 38: `struct ManifestImportService: ManifestImporting {` Declares the Swift `struct` named `ManifestImportService`. Structs are value types, which makes them a common fit for data models and SwiftUI views.
+- Line 39: `let loader: any ManifestLoading` Declares an immutable stored value with `let`. Once a value is assigned for this instance, the property itself does not change.
+- Line 40: `init(loader: any ManifestLoading = LocalManifestLoader()) {` Starts an initializer. `init` is Swift’s constructor and is responsible for preparing a new instance with valid stored properties.
+- Line 41: `self.loader = loader` The source on this line is `self.loader = loader`. It contributes to the surrounding declaration or expression exactly where it appears.
+- Line 42: `}` Closes part of the surrounding scope, closure, or argument list that started on earlier lines.
+- Line 43: `func importManifest(from url: URL, now: Date = Date()) async throws` Starts the function `importManifest`. Functions group behavior into a reusable named operation.
+- Line 44: `-> ManifestImportOutcome` The source on this line is `-> ManifestImportOutcome`. It contributes to the surrounding declaration or expression exactly where it appears.
+- Line 45: `{` Opens a new Swift scope, so the following indented lines belong to the declaration or control-flow block above.
+- Line 46: `guard url.pathExtension.lowercased() == "json" else {` Starts a `guard` statement. Swift uses `guard` for required preconditions and exits early if the condition is not satisfied.
+- Line 47: `throw ManifestImportError.invalidType` Throws an error. That stops normal execution here and hands the failure to the nearest caller that handles errors.
+- Line 48: `}` Closes part of the surrounding scope, closure, or argument list that started on earlier lines.
+- Line 49: `if (try? url.resourceValues(forKeys: [.fileSizeKey]).fileSize).map({` Starts an `if` condition. The following block runs only when the condition evaluates to true.
+- Line 50: `$0 > 1_048_576` The source on this line is `$0 > 1_048_576`. It contributes to the surrounding declaration or expression exactly where it appears.
+- Line 51: `}) == true {` Closes part of the surrounding scope, closure, or argument list that started on earlier lines.
+- Line 52: `throw ManifestImportError.tooLarge` Throws an error. That stops normal execution here and hands the failure to the nearest caller that handles errors.
+- Line 53: `}` Closes part of the surrounding scope, closure, or argument list that started on earlier lines.
+- Line 54: `let data = try await loader.loadManifest(from: url)` Declares an immutable stored value with `let`. Once a value is assigned for this instance, the property itself does not change.
+- Line 55: `let dto: ManifestDTO` Declares an immutable stored value with `let`. Once a value is assigned for this instance, the property itself does not change.
+- Line 56: `do {` Starts a `do` block so the code inside can call throwing operations and pair them with `catch` handling.
+- Line 57: `dto = try JSONDecoder().decode(ManifestDTO.self, from: data)` The source on this line is `dto = try JSONDecoder().decode(ManifestDTO.self, from: data)`. It contributes to the surrounding declaration or expression exactly where it appears.
+- Line 58: `} catch {` Handles any error thrown by the preceding `do` block.
+- Line 59: `return .init(` Returns a value from the current function or computed property.
+- Line 60: `package: nil,` The source on this line is `package: nil,`. It contributes to the surrounding declaration or expression exactly where it appears.
+- Line 61: `issues: [` The source on this line is `issues: [`. It contributes to the surrounding declaration or expression exactly where it appears.
+- Line 62: `.init(` Continues the previous expression with another SwiftUI modifier or method call. Chaining like this is a very common Swift style.
+- Line 63: `id: "manifest.decode",` The source on this line is `id: "manifest.decode",`. It contributes to the surrounding declaration or expression exactly where it appears.
+- Line 64: `message: "Invalid JSON or missing required fields."` The source on this line is `message: "Invalid JSON or missing required fields."`. It contributes to the surrounding declaration or expression exactly where it appears.
+- Line 65: `)` Closes part of the surrounding scope, closure, or argument list that started on earlier lines.
+- Line 66: `],` The source on this line is `],`. It contributes to the surrounding declaration or expression exactly where it appears.
+- Line 67: `status: nil` The source on this line is `status: nil`. It contributes to the surrounding declaration or expression exactly where it appears.
+- Line 68: `)` Closes part of the surrounding scope, closure, or argument list that started on earlier lines.
+- Line 69: `}` Closes part of the surrounding scope, closure, or argument list that started on earlier lines.
+- Line 70: `var issues: [MobileValidationIssue] = []` Declares a `var` property. `var` means the value may change later, or at least is not guaranteed to stay constant.
+- Line 71: `let parts = dto.packageId.split(separator: "-")` Declares an immutable stored value with `let`. Once a value is assigned for this instance, the property itself does not change.
+- Line 72: `if parts.count != 4 || parts[0] != "ANAV"` Starts an `if` condition. The following block runs only when the condition evaluates to true.
+- Line 73: `|| parts[1] != Substring(dto.cycle)` The source on this line is `|| parts[1] != Substring(dto.cycle)`. It contributes to the surrounding declaration or expression exactly where it appears.
+- Line 74: `|| parts[2] != Substring(dto.region)` The source on this line is `|| parts[2] != Substring(dto.region)`. It contributes to the surrounding declaration or expression exactly where it appears.
+- Line 75: `|| dto.cycle.range(of: "^[0-9]{4}$", options: .regularExpression)` The source on this line is `|| dto.cycle.range(of: "^[0-9]{4}$", options: .regularExpression)`. It contributes to the surrounding declaration or expression exactly where it appears.
+- Line 76: `== nil` The source on this line is `== nil`. It contributes to the surrounding declaration or expression exactly where it appears.
+- Line 77: `{` Opens a new Swift scope, so the following indented lines belong to the declaration or control-flow block above.
+- Line 78: `issues.append(` The source on this line is `issues.append(`. It contributes to the surrounding declaration or expression exactly where it appears.
+- Line 79: `.init(` Continues the previous expression with another SwiftUI modifier or method call. Chaining like this is a very common Swift style.
+- Line 80: `id: "manifest.identity",` The source on this line is `id: "manifest.identity",`. It contributes to the surrounding declaration or expression exactly where it appears.
+- Line 81: `message: "Package ID, cycle, and region are inconsistent."` The source on this line is `message: "Package ID, cycle, and region are inconsistent."`. It contributes to the surrounding declaration or expression exactly where it appears.
+- Line 82: `)` Closes part of the surrounding scope, closure, or argument list that started on earlier lines.
+- Line 83: `)` Closes part of the surrounding scope, closure, or argument list that started on earlier lines.
+- Line 84: `}` Closes part of the surrounding scope, closure, or argument list that started on earlier lines.
+- Line 85: `let formatter = DateFormatter()` Declares an immutable stored value with `let`. Once a value is assigned for this instance, the property itself does not change.
+- Line 86: `formatter.locale = Locale(identifier: "en_US_POSIX")` The source on this line is `formatter.locale = Locale(identifier: "en_US_POSIX")`. It contributes to the surrounding declaration or expression exactly where it appears.
+- Line 87: `formatter.timeZone = TimeZone(secondsFromGMT: 0)` The source on this line is `formatter.timeZone = TimeZone(secondsFromGMT: 0)`. It contributes to the surrounding declaration or expression exactly where it appears.
+- Line 88: `formatter.dateFormat = "yyyy-MM-dd"` The source on this line is `formatter.dateFormat = "yyyy-MM-dd"`. It contributes to the surrounding declaration or expression exactly where it appears.
+- Line 89: `guard let from = formatter.date(from: dto.effectiveFrom),` Starts a `guard` statement. Swift uses `guard` for required preconditions and exits early if the condition is not satisfied.
+- Line 90: `let to = formatter.date(from: dto.effectiveTo)` Declares an immutable stored value with `let`. Once a value is assigned for this instance, the property itself does not change.
+- Line 91: `else {` Starts the fallback branch used when the previous condition did not match.
+- Line 92: `return .init(` Returns a value from the current function or computed property.
+- Line 93: `package: nil,` The source on this line is `package: nil,`. It contributes to the surrounding declaration or expression exactly where it appears.
+- Line 94: `issues: [` The source on this line is `issues: [`. It contributes to the surrounding declaration or expression exactly where it appears.
+- Line 95: `.init(` Continues the previous expression with another SwiftUI modifier or method call. Chaining like this is a very common Swift style.
+- Line 96: `id: "manifest.dates",` The source on this line is `id: "manifest.dates",`. It contributes to the surrounding declaration or expression exactly where it appears.
+- Line 97: `message:` The source on this line is `message:`. It contributes to the surrounding declaration or expression exactly where it appears.
+- Line 98: `"Effective dates must use valid YYYY-MM-DD values."` The source on this line is `"Effective dates must use valid YYYY-MM-DD values."`. It contributes to the surrounding declaration or expression exactly where it appears.
+- Line 99: `)` Closes part of the surrounding scope, closure, or argument list that started on earlier lines.
+- Line 100: `],` The source on this line is `],`. It contributes to the surrounding declaration or expression exactly where it appears.
+- Line 101: `status: nil` The source on this line is `status: nil`. It contributes to the surrounding declaration or expression exactly where it appears.
+- Line 102: `)` Closes part of the surrounding scope, closure, or argument list that started on earlier lines.
+- Line 103: `}` Closes part of the surrounding scope, closure, or argument list that started on earlier lines.
+- Line 104: `if to < from {` Starts an `if` condition. The following block runs only when the condition evaluates to true.
+- Line 105: `issues.append(` The source on this line is `issues.append(`. It contributes to the surrounding declaration or expression exactly where it appears.
+- Line 106: `.init(` Continues the previous expression with another SwiftUI modifier or method call. Chaining like this is a very common Swift style.
+- Line 107: `id: "manifest.dateOrder",` The source on this line is `id: "manifest.dateOrder",`. It contributes to the surrounding declaration or expression exactly where it appears.
+- Line 108: `message: "Effective end date precedes start date."` The source on this line is `message: "Effective end date precedes start date."`. It contributes to the surrounding declaration or expression exactly where it appears.
+- Line 109: `)` Closes part of the surrounding scope, closure, or argument list that started on earlier lines.
+- Line 110: `)` Closes part of the surrounding scope, closure, or argument list that started on earlier lines.
+- Line 111: `} else if to < Calendar.current.startOfDay(for: now) {` Closes part of the surrounding scope, closure, or argument list that started on earlier lines.
+- Line 112: `issues.append(` The source on this line is `issues.append(`. It contributes to the surrounding declaration or expression exactly where it appears.
+- Line 113: `.init(id: "manifest.expired", message: "Package is expired.")` Continues the previous expression with another SwiftUI modifier or method call. Chaining like this is a very common Swift style.
+- Line 114: `)` Closes part of the surrounding scope, closure, or argument list that started on earlier lines.
+- Line 115: `} else if from > now {` Closes part of the surrounding scope, closure, or argument list that started on earlier lines.
+- Line 116: `issues.append(` The source on this line is `issues.append(`. It contributes to the surrounding declaration or expression exactly where it appears.
+- Line 117: `.init(` Continues the previous expression with another SwiftUI modifier or method call. Chaining like this is a very common Swift style.
+- Line 118: `id: "manifest.future",` The source on this line is `id: "manifest.future",`. It contributes to the surrounding declaration or expression exactly where it appears.
+- Line 119: `message: "Package is not effective yet."` The source on this line is `message: "Package is not effective yet."`. It contributes to the surrounding declaration or expression exactly where it appears.
+- Line 120: `)` Closes part of the surrounding scope, closure, or argument list that started on earlier lines.
+- Line 121: `)` Closes part of the surrounding scope, closure, or argument list that started on earlier lines.
+- Line 122: `}` Closes part of the surrounding scope, closure, or argument list that started on earlier lines.
+- Line 123: `for file in dto.files {` Starts a loop that repeats the enclosed block for each item in a collection.
+- Line 124: `if file.path.isEmpty || file.path.hasPrefix("/")` Starts an `if` condition. The following block runs only when the condition evaluates to true.
+- Line 125: `|| file.path.contains("..") || file.path.contains("\\")` The source on this line is `|| file.path.contains("..") || file.path.contains("\\")`. It contributes to the surrounding declaration or expression exactly where it appears.
+- Line 126: `{` Opens a new Swift scope, so the following indented lines belong to the declaration or control-flow block above.
+- Line 127: `issues.append(` The source on this line is `issues.append(`. It contributes to the surrounding declaration or expression exactly where it appears.
+- Line 128: `.init(` Continues the previous expression with another SwiftUI modifier or method call. Chaining like this is a very common Swift style.
+- Line 129: `id: "file.path.\(file.path)",` The source on this line is `id: "file.path.\(file.path)",`. It contributes to the surrounding declaration or expression exactly where it appears.
+- Line 130: `message: "Unsafe declared path: \(file.path)"` The source on this line is `message: "Unsafe declared path: \(file.path)"`. It contributes to the surrounding declaration or expression exactly where it appears.
+- Line 131: `)` Closes part of the surrounding scope, closure, or argument list that started on earlier lines.
+- Line 132: `)` Closes part of the surrounding scope, closure, or argument list that started on earlier lines.
+- Line 133: `}` Closes part of the surrounding scope, closure, or argument list that started on earlier lines.
+- Line 134: `if file.sha256.range(` Starts an `if` condition. The following block runs only when the condition evaluates to true.
+- Line 135: `of: "^[0-9a-fA-F]{64}$",` The source on this line is `of: "^[0-9a-fA-F]{64}$",`. It contributes to the surrounding declaration or expression exactly where it appears.
+- Line 136: `options: .regularExpression` The source on this line is `options: .regularExpression`. It contributes to the surrounding declaration or expression exactly where it appears.
+- Line 137: `) == nil {` The source on this line is `) == nil {`. It contributes to the surrounding declaration or expression exactly where it appears.
+- Line 138: `issues.append(` The source on this line is `issues.append(`. It contributes to the surrounding declaration or expression exactly where it appears.
+- Line 139: `.init(` Continues the previous expression with another SwiftUI modifier or method call. Chaining like this is a very common Swift style.
+- Line 140: `id: "file.hash.\(file.path)",` The source on this line is `id: "file.hash.\(file.path)",`. It contributes to the surrounding declaration or expression exactly where it appears.
+- Line 141: `message: "Invalid SHA-256 for \(file.path)"` The source on this line is `message: "Invalid SHA-256 for \(file.path)"`. It contributes to the surrounding declaration or expression exactly where it appears.
+- Line 142: `)` Closes part of the surrounding scope, closure, or argument list that started on earlier lines.
+- Line 143: `)` Closes part of the surrounding scope, closure, or argument list that started on earlier lines.
+- Line 144: `}` Closes part of the surrounding scope, closure, or argument list that started on earlier lines.
+- Line 145: `}` Closes part of the surrounding scope, closure, or argument list that started on earlier lines.
+- Line 146: `let failed = issues.contains { $0.id != "manifest.future" }` Declares an immutable stored value with `let`. Once a value is assigned for this instance, the property itself does not change.
+- Line 147: `let status: PackageStatus =` Declares an immutable stored value with `let`. Once a value is assigned for this instance, the property itself does not change.
+- Line 148: `failed ? .failed : issues.isEmpty ? .valid : .warning` The source on this line is `failed ? .failed : issues.isEmpty ? .valid : .warning`. It contributes to the surrounding declaration or expression exactly where it appears.
+- Line 149: `let package = NavigationPackage(` Declares an immutable stored value with `let`. Once a value is assigned for this instance, the property itself does not change.
+- Line 150: `id: dto.packageId,` The source on this line is `id: dto.packageId,`. It contributes to the surrounding declaration or expression exactly where it appears.
+- Line 151: `provider: dto.provider,` The source on this line is `provider: dto.provider,`. It contributes to the surrounding declaration or expression exactly where it appears.
+- Line 152: `source: dto.source,` The source on this line is `source: dto.source,`. It contributes to the surrounding declaration or expression exactly where it appears.
+- Line 153: `cycle: dto.cycle,` The source on this line is `cycle: dto.cycle,`. It contributes to the surrounding declaration or expression exactly where it appears.
+- Line 154: `region: dto.region,` The source on this line is `region: dto.region,`. It contributes to the surrounding declaration or expression exactly where it appears.
+- Line 155: `targetDevice: dto.targetDevice,` The source on this line is `targetDevice: dto.targetDevice,`. It contributes to the surrounding declaration or expression exactly where it appears.
+- Line 156: `effectiveFrom: from,` The source on this line is `effectiveFrom: from,`. It contributes to the surrounding declaration or expression exactly where it appears.
+- Line 157: `effectiveTo: to,` The source on this line is `effectiveTo: to,`. It contributes to the surrounding declaration or expression exactly where it appears.
+- Line 158: `status: status,` The source on this line is `status: status,`. It contributes to the surrounding declaration or expression exactly where it appears.
+- Line 159: `files: dto.files.map {` The source on this line is `files: dto.files.map {`. It contributes to the surrounding declaration or expression exactly where it appears.
+- Line 160: `.init(` Continues the previous expression with another SwiftUI modifier or method call. Chaining like this is a very common Swift style.
+- Line 161: `path: $0.path,` The source on this line is `path: $0.path,`. It contributes to the surrounding declaration or expression exactly where it appears.
+- Line 162: `category: $0.category,` The source on this line is `category: $0.category,`. It contributes to the surrounding declaration or expression exactly where it appears.
+- Line 163: `required: $0.required` The source on this line is `required: $0.required`. It contributes to the surrounding declaration or expression exactly where it appears.
+- Line 164: `)` Closes part of the surrounding scope, closure, or argument list that started on earlier lines.
+- Line 165: `}` Closes part of the surrounding scope, closure, or argument list that started on earlier lines.
+- Line 166: `)` Closes part of the surrounding scope, closure, or argument list that started on earlier lines.
+- Line 167: `return .init(package: package, issues: issues, status: status)` Returns a value from the current function or computed property.
+- Line 168: `}` Closes part of the surrounding scope, closure, or argument list that started on earlier lines.
+- Line 169: `}` Closes part of the surrounding scope, closure, or argument list that started on earlier lines.
+
+## Why This File Matters
+This file defines the manifest import result types, the manifest DTO used for decoding, and the service that validates imported manifests.
