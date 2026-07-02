@@ -1,16 +1,16 @@
 # AeroNav Update Console
 
 Electron/macOS application for the non-operational AeroNav package workflow demo. Phase 1 supports
-safe folder selection, manifest parsing, package metadata and file-tree display, SHA-256 verification,
-and deterministic validation reporting.
+safe package-folder and ZIP-package selection, manifest parsing, package metadata and file-tree display,
+SHA-256 verification, and deterministic validation reporting.
 
-Device compatibility, archive import, export, diagnostics, and operation history are not implemented.
-Phase 2 adds selectable fictional device profiles and compatibility checks; archive import, export,
-diagnostics, and operation history remain unimplemented.
+Device compatibility, export, diagnostics, and operation history are not implemented in Phase 1.
+Phase 2 adds selectable fictional device profiles and compatibility checks; export,
+diagnostics, and operation history remain unimplemented at that stage.
 Phase 3 exports validated declared files to a selected folder, verifies copied checksums, and writes `export-log.json`.
 Phase 4 adds portable diagnostics reports and bounded local import/export history.
 Phase 5 adds manifest-declared route and PDF previews plus optional compact companion text and QR output.
-The package picker remembers the last successfully imported accessible folder across launches.
+The package picker remembers the last successfully imported accessible folder or ZIP path across launches.
 
 ## Requirements
 

@@ -694,7 +694,7 @@ non-operational demonstrations.
 
 Phase 1 is implemented for both applications:
 
-- desktop selects a package folder, parses `manifest.json`, displays metadata and a file tree,
+- desktop selects a package folder or ZIP, parses `manifest.json`, displays metadata and a file tree,
   calculates SHA-256 checksums, and produces a deterministic validation report;
 - mobile displays representative sample packages and navigates to metadata, status, effective dates,
   and package contents grouped by category.
