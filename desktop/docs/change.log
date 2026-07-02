@@ -207,3 +207,21 @@ Validation:
 Notes:
 - The QR and compact text encode the same `AERONAV1:` payload.
 - Folder state updates only after a successful import and inaccessible persisted paths are ignored.
+
+2026-07-03 00:18
+Scope: desktop
+Type: fix
+Summary: Prevent the ZIP extractor native binding from crashing Electron startup.
+Files changed:
+- desktop/package.json
+- desktop/package-lock.json
+- desktop/docs/PR/2026-07-03_0018_fix-desktop-zip-native-binding.md
+- desktop/docs/change.log
+Validation:
+- npm run typecheck: PASS — main and renderer TypeScript checks passed.
+- npm run lint: PASS — ESLint reported no issues.
+- npm run test: PASS — 38 tests passed across 12 files, including the ZIP package importer coverage.
+- npm run build: PASS — Electron Vite built all bundles and `out/main/index.js` now imports `@electron-internal/extract-zip` directly.
+- ELECTRON_ENABLE_LOGGING=1 npm run dev: PASS — Electron started, connected the renderer, and did not hit the native-binding crash.
+Notes:
+- The ZIP importer remains unchanged; this fix makes its package installation and bundling explicit.
