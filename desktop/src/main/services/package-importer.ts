@@ -4,7 +4,11 @@ import type { FileTreeNode, PackageImportResponse } from '../../shared/domain/im
 import { ManifestParseError, parseManifest } from '../../shared/services/manifest-parser'
 import { validatePackage } from '../../shared/services/package-validator'
 
-export async function importPackageFolder(rootPath: string, now: Date = new Date()): Promise<PackageImportResponse> {
+export async function importPackageFolder(
+  rootPath: string,
+  now: Date = new Date(),
+  rootName: string = basename(rootPath)
+): Promise<PackageImportResponse> {
   try {
     const manifestText = await readFile(join(rootPath, 'manifest.json'), 'utf8')
     const manifest = parseManifest(manifestText)
@@ -14,7 +18,7 @@ export async function importPackageFolder(rootPath: string, now: Date = new Date
     ])
     return {
       kind: 'completed',
-      package: { rootName: basename(rootPath), manifest, tree, validation }
+      package: { rootName, manifest, tree, validation }
     }
   } catch (error) {
     if (error instanceof ManifestParseError) {

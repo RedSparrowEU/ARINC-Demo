@@ -1,3 +1,22 @@
+2026-07-02 23:50
+Scope: desktop
+Type: feature
+Summary: Allow the desktop importer to consume AeroNav package ZIP files alongside folders.
+Files changed:
+- desktop/src/main/services/
+- desktop/src/main/ipc/package-ipc.ts
+- desktop/src/renderer/src/App.tsx
+- desktop/tests/package-importer.test.ts
+- desktop/README.md
+- desktop/docs/PR/2026-07-02_2350_zip-package-import.md
+Validation:
+- npm run typecheck: PASS — archive-aware import types passed.
+- npm run lint: PASS — desktop source and tests passed ESLint.
+- npm run test: PASS — package importer ZIP coverage and existing desktop tests passed.
+- npm run build: PASS — Electron Vite built main, preload, and renderer bundles with ZIP import support.
+Notes:
+- ZIP imports extract to a temporary workspace, then reuse the existing folder validation, preview, export, and diagnostics flow from the resolved package root.
+
 2026-06-30 17:20
 Scope: desktop
 Type: feature
