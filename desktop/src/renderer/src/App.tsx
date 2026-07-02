@@ -46,10 +46,10 @@ export function App(): React.JSX.Element {
         <div>
           <p className="eyebrow">NON-OPERATIONAL DEMO</p>
           <h1>AeroNav Update Console</h1>
-          <p className="summary">Import a demo package folder, verify its manifest and checksums, and review deterministic validation results.</p>
+          <p className="summary">Import a demo package folder or ZIP, verify its manifest and checksums, and review deterministic validation results.</p>
         </div>
         <button onClick={() => void selectPackage()} disabled={state.kind === 'loading'}>
-          {state.kind === 'loading' ? 'Validating…' : state.kind === 'completed' ? 'Choose another folder' : 'Select package folder'}
+          {state.kind === 'loading' ? 'Validating…' : state.kind === 'completed' ? 'Choose another package' : 'Select package'}
         </button>
         <button
           onClick={() => {
@@ -73,7 +73,7 @@ function EmptyState(): React.JSX.Element {
   return (
     <section className="panel empty-state">
       <h2>No package selected</h2>
-      <p>Select a folder containing <code>manifest.json</code>. Archive import and device compatibility are outside Phase 1.</p>
+      <p>Select a folder containing <code>manifest.json</code> or a ZIP containing one package. Device compatibility, export, diagnostics, and previews are available after import.</p>
     </section>
   )
 }
